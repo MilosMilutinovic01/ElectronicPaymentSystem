@@ -1,1 +1,39 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Varela+Round&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Rowdies:wght@300;400;700&family=Varela+Round&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bevan:ital@0;1&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Montserrat|Open+Sans|Roboto");
+@import "ngx-toastr/toastr";
+:root {
+  --clr-primary-1: 255, 255, 255; /* White background */
+  --clr-primary-2: 230, 240, 255; /* Light blue */
+  --clr-primary-3: 0, 122, 204; /* Button color */
+  --clr-primary-4: 18, 32, 63; /* Darker blue text */
+
+  --clr-accent-high: 0, 150, 255; /* Vivid blue for hover */
+  --clr-accent-medium: 0, 122, 204; /* Main accent */
+  --clr-border: 215, 224, 236; /* Light border */
+
+  --fnt-color-light: 255, 255, 255;
+  --fnt-color-dark: 18, 32, 63;
+
+  --fnt-body: "Montserrat", Tahoma, Geneva, Verdana, sans-serif;
+  --fnt-heading: "Bevan", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: rgb(var(--clr-primary-2));
+  font-family: var(--fnt-body);
+  overflow-y: auto;
+}
+
+p {
+  color: rgb(var(--clr-primary-2));
+}
