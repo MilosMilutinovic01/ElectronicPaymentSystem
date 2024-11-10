@@ -1,0 +1,32 @@
+<div class="card">
+  <div class="login-card">
+    <form [formGroup]="userForm">
+      <div class="form">
+        <div class="form-column">
+          <div class="form-field">
+            <input
+              formControlName="username"
+              type="text"
+              class="input"
+              placeholder="Username"
+            />
+          </div>
+
+          <div class="form-field">
+            <input
+              formControlName="password"
+              type="password"
+              class="input"
+              placeholder="Password"
+            />
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn" (click)="login()">Log in</button>
+    </form>
+  </div>
+  <div class="div-text">
+    <div class="text">Welcome back</div>
+    <div class="main-text">Log in</div>
+  </div>
+</div>

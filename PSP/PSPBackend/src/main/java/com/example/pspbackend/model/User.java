@@ -1,17 +1,15 @@
-package org.example.webshopbackend.model;
+package com.example.pspbackend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.webshopbackend.model.enums.Role;
 
 import java.util.UUID;
 
-
 @Entity
 @Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "username")
+        @UniqueConstraint(columnNames = "username"),
 })
 @Data
 @NoArgsConstructor

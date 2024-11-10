@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../shared/env/environment';
 import { User } from '../shared/model/user.model';
+import { HttpClient } from '@angular/common/http';
+import { TokenService } from './token.service';
 import { Registration } from '../shared/model/registration.model';
-import { Login } from '../shared/model/login.model';
 import {
   LoginResponseDto,
   RegistrationResponseDto,
 } from '../shared/model/response.model';
-import { TokenService } from './token.service';
+import { environment } from '../shared/env/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Login } from '../shared/model/login.model';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +30,6 @@ export class AuthService {
       registration
     );
   }
-
   login(login: Login): Observable<LoginResponseDto> {
     return this.http
       .post<LoginResponseDto>(environment.apiUrl + 'auth/login', login)
