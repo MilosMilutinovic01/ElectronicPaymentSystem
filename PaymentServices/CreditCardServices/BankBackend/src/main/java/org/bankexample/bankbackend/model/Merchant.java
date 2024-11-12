@@ -28,6 +28,6 @@ public class Merchant {
     private String password;    // api key
 
     @Column(name = "pan")
-    private String pan;    // api key
+    private String pan;
 
 }

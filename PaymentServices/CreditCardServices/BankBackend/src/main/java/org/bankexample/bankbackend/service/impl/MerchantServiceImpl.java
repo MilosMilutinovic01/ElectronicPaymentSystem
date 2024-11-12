@@ -1,5 +1,6 @@
 package org.bankexample.bankbackend.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.bankexample.bankbackend.dto.CreateMerchantDTO;
 import org.bankexample.bankbackend.dto.EditMerchantDTO;
 import org.bankexample.bankbackend.exception.MerchantAlreadyExistsException;
@@ -11,11 +12,11 @@ import org.bankexample.bankbackend.service.MerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor
 @Service
 public class MerchantServiceImpl implements MerchantService {
 
-    @Autowired
-    private MerchantRepository merchantRepository;
+    private final MerchantRepository merchantRepository;
 
     @Override
     public void addMerchant(CreateMerchantDTO createMerchantDTO) {
@@ -33,5 +34,12 @@ public class MerchantServiceImpl implements MerchantService {
         merchant.setMerchantName(editMerchantDTO.getMerchantName());
         merchant.setPassword(editMerchantDTO.getPassword());
         merchantRepository.save(merchant);
+    }
+
+    @Override
+    public String getMerchantPan(String merchantId) {
+        Merchant merchant = merchantRepository.findByMerchantId(merchantId)
+                .orElseThrow(() -> new MerchantDoesNotExistException(merchantId));
+        return merchant.getPan();
     }
 }
