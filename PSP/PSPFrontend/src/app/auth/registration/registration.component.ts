@@ -54,7 +54,7 @@ export class RegistrationComponent {
         next: (result) => {
           this.toast.success(result.message, 'Success!');
           if (result.userId) {
-            this.router.navigate(['/login']);
+            this.router.navigate(['']);
           }
         },
         error: (error) => {
@@ -66,5 +66,9 @@ export class RegistrationComponent {
     } else {
       this.isFormValid = false;
     }
+  }
+
+  login() {
+    this.router.navigate(['']);
   }
 }

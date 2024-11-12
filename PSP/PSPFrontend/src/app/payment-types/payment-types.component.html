@@ -1,0 +1,18 @@
+<div class="centered-page">
+  <div class="card">
+    <div class="text">Select your preferred payment methods</div>
+    <div class="payments-card">
+      <form [formGroup]="group">
+        <div *ngFor="let t of types" class="field-checkbox">
+          <p-checkbox
+            formControlName="selectedTypes"
+            [label]="t.name"
+            name="group"
+            [value]="t"
+          />
+        </div>
+      </form>
+    </div>
+    <button type="submit" class="btn">Submit</button>
+  </div>
+</div>
