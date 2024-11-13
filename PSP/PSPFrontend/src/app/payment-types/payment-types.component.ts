@@ -11,6 +11,8 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { NgForOf } from '@angular/common';
+import { PaymentsService } from './payments.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-payment-types',
@@ -22,14 +24,7 @@ import { NgForOf } from '@angular/common';
 export class PaymentTypesComponent {
   user: User = { username: '' };
 
-  types: PaymentType[] = [
-    {
-      name: 'Kartica',
-    },
-    {
-      name: 'PayPal',
-    },
-  ];
+  types: PaymentType[] = [];
   selectedTypes: PaymentType[] = [];
 
   group: FormGroup;
@@ -37,10 +32,12 @@ export class PaymentTypesComponent {
   constructor(
     public router: Router,
     public authService: AuthService,
-    public fb: FormBuilder
+    public paymentsService: PaymentsService,
+    public fb: FormBuilder,
+    private toast: ToastrService
   ) {
     this.group = fb.group({
-      selectedTypes: [[this.types[0]]],
+      selectedTypes: [[]],
     });
   }
 
@@ -48,7 +45,22 @@ export class PaymentTypesComponent {
     this.authService.user$.subscribe((user) => {
       this.user = user;
     });
+    this.findAllTypes();
 
-    this.selectedTypes = this.types.filter((t) => t.name === 'Kartica');
+    //this.selectedTypes = this.types.filter((t) => t.name === 'Kartica');
+  }
+
+  findAllTypes() {
+    this.paymentsService.findAll().subscribe({
+      next: (result) => {
+        console.log(result);
+        this.types = result;
+      },
+      error: (error) => {
+        if (error.status === 409) {
+          this.toast.error(error.message, 'Error!');
+        }
+      },
+    });
   }
 }

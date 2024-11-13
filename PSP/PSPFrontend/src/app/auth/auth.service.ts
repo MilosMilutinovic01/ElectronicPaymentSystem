@@ -30,6 +30,7 @@ export class AuthService {
       registration
     );
   }
+
   login(login: Login): Observable<LoginResponseDto> {
     return this.http
       .post<LoginResponseDto>(environment.apiUrl + 'auth/login', login)

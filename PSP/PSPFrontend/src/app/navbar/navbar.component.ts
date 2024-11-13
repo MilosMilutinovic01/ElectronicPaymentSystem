@@ -17,7 +17,7 @@ export class NavbarComponent {
   constructor(public router: Router, public authService: AuthService) {}
 
   ngOnInit(): void {
-    this.authService.setUser();
+    //this.authService.setUser();
     this.authService.user$.subscribe((user) => {
       this.user = user;
     });
@@ -25,7 +25,6 @@ export class NavbarComponent {
 
   logout(): void {
     this.authService.logout();
-    console.log(this.user.username);
     this.router.navigate(['']);
   }
 }

@@ -39,7 +39,7 @@ public class AuthService {
     @Autowired
     private BCryptPasswordEncoder encoder;
     @Autowired
-    private UserRepository userRepository;
+    private IUserRepository IUserRepository;
 
     private String generateToken(Authentication authentication) {
         Instant now = Instant.now();
@@ -52,7 +52,7 @@ public class AuthService {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
-                .expiresAt(now.plus(10, ChronoUnit.MINUTES))
+                .expiresAt(now.plus(10, ChronoUnit.HOURS))
                 .subject(authentication.getName())
                 .claim("scope", scope)
                 .build();
@@ -74,14 +74,14 @@ public class AuthService {
 
             return new ResponseEntity(new ResponseDTO("User logged in successfully", token), HttpStatus.OK) ;
         }catch (Exception e){
-            return new ResponseEntity("Error while autentication!", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity("Error while authentication!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     public ResponseEntity registration(RegistrationDTO registration){
         try {
             User user = UserMapper.INSTANCE.registrationDtoToModel(registration);
-            Optional<User> foundUser = userRepository.findByUsername(user.getUsername());
+            Optional<User> foundUser = IUserRepository.findByUsername(user.getUsername());
             if(foundUser.isPresent()) {
                 return new ResponseEntity(new RegistrationResponseDTO("Registration failed! Username already exists.", null), HttpStatus.BAD_REQUEST);
             }
@@ -89,7 +89,7 @@ public class AuthService {
             user.setPassword(encoder.encode(user.getPassword()));
             user.setRole(Role.CUSTOMER);
 
-            User savedUser = userRepository.save(user);
+            User savedUser = IUserRepository.save(user);
             log.info("Registration DTO: ", user.getName());
             return new ResponseEntity(new RegistrationResponseDTO("User registered successfully", savedUser.getId().toString()), HttpStatus.OK);
         }catch (Exception e){
