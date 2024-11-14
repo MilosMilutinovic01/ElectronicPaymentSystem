@@ -1,14 +1,19 @@
 package org.bankexample.bankbackend.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.bankexample.bankbackend.dto.ChargeRequestDTO;
-import org.bankexample.bankbackend.dto.CreatePaymentRequestDTO;
-import org.bankexample.bankbackend.dto.PaymentCreatedResponseDTO;
+import org.bankexample.bankbackend.dto.payment.InitiatePaymentDTO;
+import org.bankexample.bankbackend.dto.payment.CreatePaymentDTO;
+import org.bankexample.bankbackend.dto.payment.PaymentCreatedResponseDTO;
+import org.bankexample.bankbackend.dto.payment.PaymentResultResponseDTO;
+import org.bankexample.bankbackend.dto.transaction.TransactionRequestDTO;
+import org.bankexample.bankbackend.dto.transaction.TransactionResultResponseDTO;
 import org.bankexample.bankbackend.mapper.PaymentMapper;
 import org.bankexample.bankbackend.model.Payment;
 import org.bankexample.bankbackend.repository.PaymentRepository;
 import org.bankexample.bankbackend.service.AcquirerService;
 import org.bankexample.bankbackend.service.MerchantService;
+import org.bankexample.bankbackend.service.TransactionService;
+import org.bankexample.bankbackend.service.CardValidationService;
 import org.springframework.stereotype.Service;
 
 import static org.bankexample.bankbackend.util.constants.PaymentConstants.PAYMENT_URL;
@@ -19,13 +24,14 @@ public class AcquirerServiceImpl implements AcquirerService {
 
     private final PaymentRepository paymentRepository;
     private final MerchantService merchantService;
+    private final TransactionService transactionService;
+    private final CardValidationService cardValidationService;
 
     @Override
-    public PaymentCreatedResponseDTO createPayment(CreatePaymentRequestDTO dto) {
+    public PaymentCreatedResponseDTO createPayment(CreatePaymentDTO dto) {
 
-        // Validate merchant id and api key TODO extract method to separate service
+        merchantService.authenticateMerchant(dto.getMerchantId(), dto.getMerchantPassword());
 
-        // Save payment to DB
         Payment created = paymentRepository.save(PaymentMapper.INSTANCE.requestDtoToModel(dto));
 
         // TODO: move to mapper
@@ -42,22 +48,20 @@ public class AcquirerServiceImpl implements AcquirerService {
     }
 
     @Override
-    public String chargePayment(ChargeRequestDTO dto) {
+    public PaymentResultResponseDTO initiatePayment(InitiatePaymentDTO dto) {
 
-        // Payment validation - id, merchantId, orderId TODO extract to separate service
+        // Parameters validation TODO extract to separate service
 
-        // Get merchant PAN from merchantService, Determine issuer bank from PAN
-
-        // If client in same bank
-            // Internal card validation
-            // Do internal transaction of money - call method from separate service
-            // Send log to PCC
+        if (cardValidationService.clientInSameBank(dto.getCardNumber())) {
+            TransactionResultResponseDTO resultResponseDTO =  transactionService.holdFunds(new TransactionRequestDTO());
+            // Send log to PCC, wait for confirmation
+        }
         // Else
-            // Send card data to PCC for validation and transaction
+            // Generate acquirerOrderId, acquirerTimestamp
+            // Send card data to PCC - forward request
 
-        // Set url
-        // Send response to PSP
-        return "";
+        // Set redirect url String.format("redirect:%s", redirectUrl);
+        return new PaymentResultResponseDTO();
     }
 
 

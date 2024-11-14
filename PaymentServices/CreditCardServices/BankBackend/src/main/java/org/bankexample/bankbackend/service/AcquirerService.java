@@ -1,13 +1,14 @@
 package org.bankexample.bankbackend.service;
 
-import org.bankexample.bankbackend.dto.ChargeRequestDTO;
-import org.bankexample.bankbackend.dto.CreatePaymentRequestDTO;
-import org.bankexample.bankbackend.dto.PaymentCreatedResponseDTO;
+import org.bankexample.bankbackend.dto.payment.InitiatePaymentDTO;
+import org.bankexample.bankbackend.dto.payment.CreatePaymentDTO;
+import org.bankexample.bankbackend.dto.payment.PaymentCreatedResponseDTO;
+import org.bankexample.bankbackend.dto.payment.PaymentResultResponseDTO;
 
 public interface AcquirerService {
 
-    PaymentCreatedResponseDTO createPayment(CreatePaymentRequestDTO dto);
+    PaymentCreatedResponseDTO createPayment(CreatePaymentDTO dto);
 
-    String chargePayment(ChargeRequestDTO dto);
+    PaymentResultResponseDTO initiatePayment(InitiatePaymentDTO dto);
 
 }

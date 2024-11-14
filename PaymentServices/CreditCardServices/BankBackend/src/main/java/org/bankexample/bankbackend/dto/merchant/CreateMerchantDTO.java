@@ -1,4 +1,4 @@
-package org.bankexample.bankbackend.dto;
+package org.bankexample.bankbackend.dto.merchant;
 
 import lombok.Data;
 

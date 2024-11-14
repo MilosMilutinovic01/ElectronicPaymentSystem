@@ -1,10 +1,13 @@
 package org.bankexample.bankbackend.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.bankexample.bankbackend.dto.ChargeRequestDTO;
-import org.bankexample.bankbackend.dto.CreatePaymentRequestDTO;
-import org.bankexample.bankbackend.dto.PaymentCreatedResponseDTO;
+import org.bankexample.bankbackend.dto.payment.InitiatePaymentDTO;
+import org.bankexample.bankbackend.dto.payment.CreatePaymentDTO;
+import org.bankexample.bankbackend.dto.payment.PaymentCreatedResponseDTO;
+import org.bankexample.bankbackend.dto.payment.PaymentResultResponseDTO;
+import org.bankexample.bankbackend.dto.transaction.TransactionRequestDTO;
 import org.bankexample.bankbackend.service.AcquirerService;
+import org.bankexample.bankbackend.service.TransactionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -18,18 +21,23 @@ import org.springframework.web.bind.annotation.*;
 public class PaymentController {
 
     private final AcquirerService acquirerService;
+    private final TransactionService transactionService;
 
     @PostMapping
-    public ResponseEntity<PaymentCreatedResponseDTO> createPaymentRequest(CreatePaymentRequestDTO dto) {
+    public ResponseEntity<PaymentCreatedResponseDTO> createPaymentRequest(CreatePaymentDTO dto) {
         PaymentCreatedResponseDTO created = acquirerService.createPayment(dto);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
-    @PostMapping("/charge")
-    public String chargePayment(@RequestBody ChargeRequestDTO dto) {
-        String redirectUrl = acquirerService.chargePayment(dto);
-        // Send response to PSP with url to redirect in WS to status page
-        return String.format("redirect:%s", redirectUrl);
+    @PostMapping("/initiate")
+    public ResponseEntity<PaymentResultResponseDTO> initiatePayment(@RequestBody InitiatePaymentDTO dto) {
+        PaymentResultResponseDTO response = acquirerService.initiatePayment(dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/hold")
+    public void processHoldTransaction(@RequestBody TransactionRequestDTO dto) {
+        transactionService.holdFunds(dto);
     }
 
     @GetMapping("/payment-success")

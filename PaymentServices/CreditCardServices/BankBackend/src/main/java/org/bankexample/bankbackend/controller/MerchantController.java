@@ -2,13 +2,11 @@ package org.bankexample.bankbackend.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.bankexample.bankbackend.dto.CreateMerchantDTO;
-import org.bankexample.bankbackend.dto.EditMerchantDTO;
+import org.bankexample.bankbackend.dto.merchant.CreateMerchantDTO;
+import org.bankexample.bankbackend.dto.merchant.EditMerchantDTO;
 import org.bankexample.bankbackend.service.MerchantService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

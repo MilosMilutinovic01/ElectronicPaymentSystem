@@ -1,11 +1,11 @@
-package org.bankexample.bankbackend.dto;
+package org.bankexample.bankbackend.dto.payment;
 
 import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Data
-public class CreatePaymentRequestDTO {
+public class CreatePaymentDTO {
 
     private String merchantId;
     private String merchantPassword;

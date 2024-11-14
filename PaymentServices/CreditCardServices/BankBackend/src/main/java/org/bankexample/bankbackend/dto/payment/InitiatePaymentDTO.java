@@ -1,15 +1,17 @@
-package org.bankexample.bankbackend.dto;
+package org.bankexample.bankbackend.dto.payment;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Data
-@AllArgsConstructor
-public class PaymentCreatedResponseDTO {
+public class InitiatePaymentDTO {
 
-    private String paymentUrl;
+    // Rename to initiate payment? -DONE
+
+    private String cardNumber;
+    private String securityCode;
+    private String expiryDate;
     private String paymentId;
     private String merchantId;
     private String merchantOrderId;
@@ -17,4 +19,5 @@ public class PaymentCreatedResponseDTO {
     private String successUrl;
     private String failedUrl;
     private String errorUrl;
+
 }
