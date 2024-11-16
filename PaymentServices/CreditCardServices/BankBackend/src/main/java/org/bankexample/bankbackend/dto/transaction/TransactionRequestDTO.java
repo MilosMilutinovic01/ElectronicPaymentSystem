@@ -9,7 +9,8 @@ public class TransactionRequestDTO {
 
     private String cardNumber;
     private String securityCode;
-    private String expiryDate;
+    private int expirationMonth;
+    private int expirationYear;
     private BigDecimal amount;
     private String merchantId;
     private String merchantOrderId;

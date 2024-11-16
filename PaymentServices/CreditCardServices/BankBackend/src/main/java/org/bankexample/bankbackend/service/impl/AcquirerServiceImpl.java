@@ -13,7 +13,7 @@ import org.bankexample.bankbackend.repository.PaymentRepository;
 import org.bankexample.bankbackend.service.AcquirerService;
 import org.bankexample.bankbackend.service.MerchantService;
 import org.bankexample.bankbackend.service.TransactionService;
-import org.bankexample.bankbackend.service.CardValidationService;
+import org.bankexample.bankbackend.service.CardService;
 import org.springframework.stereotype.Service;
 
 import static org.bankexample.bankbackend.util.constants.PaymentConstants.PAYMENT_URL;
@@ -25,7 +25,7 @@ public class AcquirerServiceImpl implements AcquirerService {
     private final PaymentRepository paymentRepository;
     private final MerchantService merchantService;
     private final TransactionService transactionService;
-    private final CardValidationService cardValidationService;
+    private final CardService cardService;
 
     @Override
     public PaymentCreatedResponseDTO createPayment(CreatePaymentDTO dto) {
@@ -52,7 +52,7 @@ public class AcquirerServiceImpl implements AcquirerService {
 
         // Parameters validation TODO extract to separate service
 
-        if (cardValidationService.clientInSameBank(dto.getCardNumber())) {
+        if (cardService.clientInSameBank(dto.getCardNumber())) {
             TransactionResultResponseDTO resultResponseDTO =  transactionService.holdFunds(new TransactionRequestDTO());
             // Send log to PCC, wait for confirmation
         }
