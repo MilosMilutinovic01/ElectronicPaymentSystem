@@ -52,6 +52,10 @@ export class AuthService {
     this.user$.next(user);
   }
 
+  getUsername(): string {
+    return this.user$.value.username;
+  }
+
   logout(): void {
     this.tokenService.clear();
     this.user$.next({ username: '' });
