@@ -11,6 +11,22 @@ export class PaymentsService {
   constructor(private http: HttpClient) {}
 
   findAll(): Observable<PaymentType[]> {
-    return this.http.get<PaymentType[]>(environment.apiUrl + 'payment');
+    return this.http.get<PaymentType[]>(environment.apiUrl + 'payment/');
+  }
+
+  findTypesByUser(userId: string): Observable<PaymentType[]> {
+    return this.http.get<PaymentType[]>(
+      environment.apiUrl + 'client/find-methods/' + userId
+    );
+  }
+
+  editUserChoice(
+    userId: string,
+    selectedTypes: PaymentType[]
+  ): Observable<PaymentType[]> {
+    return this.http.put<PaymentType[]>(
+      environment.apiUrl + 'client/add-methods/' + userId,
+      selectedTypes
+    );
   }
 }

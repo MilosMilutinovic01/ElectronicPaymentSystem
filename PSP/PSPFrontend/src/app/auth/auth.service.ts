@@ -17,6 +17,7 @@ import { Login } from '../shared/model/login.model';
 })
 export class AuthService {
   user$ = new BehaviorSubject<User>({
+    userId: '',
     username: '',
   });
 
@@ -45,6 +46,7 @@ export class AuthService {
   setUser(): void {
     const accessToken = this.tokenService.getAccessToken() || '';
     const user: User = {
+      userId: this.jwtHelperService.decodeToken(accessToken).userId,
       username: this.jwtHelperService.decodeToken(accessToken).sub,
     };
 
@@ -53,6 +55,6 @@ export class AuthService {
 
   logout(): void {
     this.tokenService.clear();
-    this.user$.next({ username: '' });
+    this.user$.next({ userId: '', username: '' });
   }
 }

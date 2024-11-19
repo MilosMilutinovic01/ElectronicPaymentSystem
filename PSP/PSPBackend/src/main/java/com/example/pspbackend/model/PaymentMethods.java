@@ -1,9 +1,12 @@
 package com.example.pspbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -20,4 +23,8 @@ public class PaymentMethods {
 
     @Column(name = "name")
     private String name;
+
+    @OneToMany(mappedBy = "method", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<ClientMethods> selectedMethods;
 }

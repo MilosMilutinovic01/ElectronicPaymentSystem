@@ -12,15 +12,15 @@ import { NgIf } from '@angular/common';
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
-  user: User = { username: '' };
+  user: User = { userId: '', username: '' };
 
   constructor(public router: Router, public authService: AuthService) {}
 
   ngOnInit(): void {
-    //this.authService.setUser();
     this.authService.user$.subscribe((user) => {
       this.user = user;
     });
+    this.authService.setUser();
   }
 
   logout(): void {

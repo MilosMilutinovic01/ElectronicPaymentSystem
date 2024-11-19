@@ -18,9 +18,10 @@ import java.util.List;
 public class PaymentMethodsController {
     @Autowired
     private PaymentMethodsService paymentMethodsService;
-    @PreAuthorize("hasPermission('CUSTOMER')")
-    @GetMapping("")
+    @PreAuthorize("hasPermission('CLIENT')")
+    @GetMapping("/")
     public ResponseEntity findAll() {
         return paymentMethodsService.findAll();
     }
+
 }

@@ -7,10 +7,13 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+import static jakarta.persistence.InheritanceType.JOINED;
+
 @Entity
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "username"),
 })
+@Inheritance(strategy=JOINED)
 @Data
 @NoArgsConstructor
 public class User {

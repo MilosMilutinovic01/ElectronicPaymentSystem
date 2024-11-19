@@ -21,7 +21,7 @@ export const authInterceptor: HttpInterceptorFn = (
   const req1 = req.clone({
     setHeaders: headers,
   });
-  console.log(req, req1)
+
   if (req.url.includes('auth')) {
     return next(req);
   }

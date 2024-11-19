@@ -1,10 +1,10 @@
 package com.example.pspbackend.service;
 
-import com.example.pspbackend.dto.LoginRequestDTO;
-import com.example.pspbackend.dto.RegistrationDTO;
-import com.example.pspbackend.dto.RegistrationResponseDTO;
-import com.example.pspbackend.dto.ResponseDTO;
+import com.example.pspbackend.auth.AuthUser;
+import com.example.pspbackend.dto.*;
+import com.example.pspbackend.mapper.ClientMapper;
 import com.example.pspbackend.mapper.UserMapper;
+import com.example.pspbackend.model.Client;
 import com.example.pspbackend.model.Role;
 import com.example.pspbackend.model.User;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -40,6 +41,8 @@ public class AuthService {
     private BCryptPasswordEncoder encoder;
     @Autowired
     private IUserRepository IUserRepository;
+    @Autowired
+    private IClientRepository IClientRepository;
 
     private String generateToken(Authentication authentication) {
         Instant now = Instant.now();
@@ -49,12 +52,16 @@ public class AuthService {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
 
+        log.info("Principal class: {}", authentication.getPrincipal().getClass());
+        String userId = ((User) authentication.getPrincipal()).getId().toString();
+
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
                 .expiresAt(now.plus(10, ChronoUnit.HOURS))
                 .subject(authentication.getName())
                 .claim("scope", scope)
+                .claim("userId", userId)
                 .build();
 
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
@@ -72,7 +79,13 @@ public class AuthService {
             log.info("Token requested for user :{}", authentication.getAuthorities());
             String token = generateToken(authentication);
 
-            return new ResponseEntity(new ResponseDTO("User logged in successfully", token), HttpStatus.OK) ;
+
+            Optional<User> foundUser = IUserRepository.findByUsername(userLogin.getUsername());
+            if(foundUser.isEmpty()) {
+                return new ResponseEntity(new MessageResponseDTO("Login failed! Username does not exist."), HttpStatus.BAD_REQUEST);
+            }
+
+            return new ResponseEntity(new ResponseDTO("User logged in successfully",  token), HttpStatus.OK) ;
         }catch (Exception e){
             return new ResponseEntity("Error while authentication!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -80,18 +93,17 @@ public class AuthService {
 
     public ResponseEntity registration(RegistrationDTO registration){
         try {
-            User user = UserMapper.INSTANCE.registrationDtoToModel(registration);
-            Optional<User> foundUser = IUserRepository.findByUsername(user.getUsername());
+            Client client = ClientMapper.INSTANCE.registrationDtoToModel(registration);
+            Optional<User> foundUser = IUserRepository.findByUsername(client.getUsername());
             if(foundUser.isPresent()) {
                 return new ResponseEntity(new RegistrationResponseDTO("Registration failed! Username already exists.", null), HttpStatus.BAD_REQUEST);
             }
+            client.setPassword(encoder.encode(client.getPassword()));
+            client.setRole(Role.CLIENT);
 
-            user.setPassword(encoder.encode(user.getPassword()));
-            user.setRole(Role.CUSTOMER);
-
-            User savedUser = IUserRepository.save(user);
-            log.info("Registration DTO: ", user.getName());
-            return new ResponseEntity(new RegistrationResponseDTO("User registered successfully", savedUser.getId().toString()), HttpStatus.OK);
+            client = IClientRepository.save(client);
+            log.info("Registration DTO: ", client.getName());
+            return new ResponseEntity(new RegistrationResponseDTO("User registered successfully", client.getId().toString()), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity(new RegistrationResponseDTO("User registration failed", null), HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -54,8 +54,13 @@ form {
   justify-content: center;
 }
 
+.field-checkbox.highlighted {
+  background-color: #e0f7fa; /* Light blue highlight */
+  border: 1px solid #00796b; /* Darker border for emphasis */
+}
+
 .btn {
-  width: 50%;
+  width: 45%;
   padding: 1rem;
   border-radius: 0.5rem;
   border: none;
@@ -64,4 +69,10 @@ form {
   font-weight: 600;
   color: rgb(var(--fnt-color-light));
   transition: background-color 0.3s;
+}
+
+.buttons {
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
 }
