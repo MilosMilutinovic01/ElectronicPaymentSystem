@@ -1,12 +1,33 @@
 package org.bankexample.bankbackend.mapper;
 
 import org.bankexample.bankbackend.dto.payment.CreatePaymentDTO;
+import org.bankexample.bankbackend.dto.payment.PaymentCreatedResponseDTO;
 import org.bankexample.bankbackend.model.Payment;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
-@Mapper
-public interface PaymentMapper {
-    PaymentMapper INSTANCE = Mappers.getMapper(PaymentMapper.class);
-    Payment requestDtoToModel(CreatePaymentDTO paymentRequestDTO);
+@Component
+public class PaymentMapper {
+
+    public PaymentCreatedResponseDTO mapToPaymentCreatedResponseDTO(Payment payment, String paymentUrl, String successUrl, String failedUrl, String errorUrl) {
+        PaymentCreatedResponseDTO dto = new PaymentCreatedResponseDTO();
+        dto.setPaymentId(dto.getPaymentId());
+        dto.setPaymentUrl(paymentUrl);
+        dto.setMerchantId(payment.getMerchantId());
+        dto.setMerchantOrderId(payment.getMerchantOrderId());
+        dto.setAmount(payment.getAmount());
+//        dto.setSuccessUrl(successUrl);
+//        dto.setFailedUrl(failedUrl);
+//        dto.setErrorUrl(errorUrl);
+        return dto;
+    }
+
+    public Payment mapToPayment(CreatePaymentDTO dto) {
+        Payment payment = new Payment();
+        payment.setMerchantId(dto.getMerchantId());
+        payment.setMerchantOrderId(dto.getMerchantOrderId());
+        payment.setMerchantTimestamp(dto.getMerchantTimestamp());
+        payment.setAmount(dto.getAmount());
+        return payment;
+    }
+
 }

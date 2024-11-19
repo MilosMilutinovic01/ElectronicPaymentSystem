@@ -1,6 +1,7 @@
 package org.bankexample.bankbackend.advice;
 
 import org.bankexample.bankbackend.exception.MerchantAlreadyExistsException;
+import org.bankexample.bankbackend.exception.MerchantAuthFailedException;
 import org.bankexample.bankbackend.exception.MerchantDoesNotExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,5 +19,10 @@ public class MerchantExceptionHandlerAdvice {
     @ExceptionHandler(MerchantDoesNotExistException.class)
     public ResponseEntity<String> handleMerchantDoesNotExists(MerchantDoesNotExistException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MerchantAuthFailedException.class)
+    public ResponseEntity<String> handleMerchantAuthFailed(MerchantAuthFailedException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 }

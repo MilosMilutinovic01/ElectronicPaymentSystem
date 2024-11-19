@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.bankexample.bankbackend.dto.merchant.CreateMerchantDTO;
 import org.bankexample.bankbackend.dto.merchant.EditMerchantDTO;
 import org.bankexample.bankbackend.exception.MerchantAlreadyExistsException;
+import org.bankexample.bankbackend.exception.MerchantAuthFailedException;
 import org.bankexample.bankbackend.exception.MerchantDoesNotExistException;
 import org.bankexample.bankbackend.mapper.MerchantMapper;
 import org.bankexample.bankbackend.model.Merchant;
@@ -44,6 +45,11 @@ public class MerchantServiceImpl implements MerchantService {
 
     @Override
     public void authenticateMerchant(String merchantId, String password) {
+        Merchant merchant = merchantRepository.findByMerchantId(merchantId)
+                .orElseThrow(() -> new MerchantDoesNotExistException(merchantId));
+        if (!merchant.getPassword().equals(password)) {
+            throw new MerchantAuthFailedException();
+        }
 
     }
 }

@@ -5,8 +5,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -17,10 +19,11 @@ public class Transaction {
 
     @Id
     private UUID id;
-    private String timestamp;
+    @CreationTimestamp
+    private Instant timestamp;
     private String merchantId;
     private String merchantOrderId;
-    private String merchantTimestamp;
+//    private String merchantTimestamp;
     private BigDecimal amount;
     private String cardNumber;  // TODO mask
     private TransactionType transactionType;
