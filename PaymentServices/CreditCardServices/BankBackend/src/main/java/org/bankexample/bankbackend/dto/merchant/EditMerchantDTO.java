@@ -8,4 +8,5 @@ import lombok.Data;
 public class EditMerchantDTO {
     private String merchantName;
     private String password;
+    private String bankAccountNumber;
 }

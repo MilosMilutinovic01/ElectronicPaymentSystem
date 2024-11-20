@@ -2,6 +2,7 @@ package org.bankexample.bankbackend.mapper;
 
 import org.bankexample.bankbackend.dto.payment.CreatePaymentDTO;
 import org.bankexample.bankbackend.dto.payment.PaymentCreatedResponseDTO;
+import org.bankexample.bankbackend.dto.transaction.TransactionResultResponseDTO;
 import org.bankexample.bankbackend.model.Payment;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +28,14 @@ public class PaymentMapper {
         payment.setMerchantOrderId(dto.getMerchantOrderId());
         payment.setMerchantTimestamp(dto.getMerchantTimestamp());
         payment.setAmount(dto.getAmount());
+        return payment;
+    }
+
+    public Payment updateIssuerAcquirerFields(Payment payment, TransactionResultResponseDTO dto) {
+        payment.setIssuerOrderId(dto.getIssuerOrderId());
+        payment.setIssuerTimestamp(dto.getIssuerTimestamp());
+        payment.setAcquirerOrderId(dto.getAcquirerOrderId());
+        payment.setAcquirerTimestamp(dto.getAcquirerTimestamp());
         return payment;
     }
 

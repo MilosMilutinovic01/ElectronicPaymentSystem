@@ -35,13 +35,15 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transaction transaction = transactionMapper.mapTransactionRequestDTOToTransaction(dto);
         transaction.setTransactionType(TransactionType.HOLD);
+        String bankAccountNumber = cardService.getBankAccountNumber(dto.getCardNumber());
+        transaction.setSenderBankAccountNumber(bankAccountNumber);
         transaction = transactionRepository.save(transaction);
+
         transaction.setIssuerOrderId(transaction.getId().toString());
         transaction.setIssuerTimestamp(LocalDateTime.now().toInstant(ZoneOffset.UTC).toString());
 
         try {
             cardService.authenticateCard(dto.getCardNumber(), dto.getExpirationMonth(), dto.getExpirationYear(), dto.getSecurityCode());
-            String bankAccountNumber = cardService.getBankAccountNumber(dto.getCardNumber());
             bankAccountService.checkAvailableFunds(dto.getAmount(), bankAccountNumber);
             transaction.setTransactionResult(TransactionResult.SUCCESS);
         } catch (CardNumberDoesNotExistException | CardAuthenticationException
@@ -52,7 +54,6 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         transactionRepository.save(transaction);
-
         return transactionMapper.mapToTransactionResultResponseDTO(transaction);
     }
 }

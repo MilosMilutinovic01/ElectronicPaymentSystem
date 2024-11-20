@@ -20,6 +20,13 @@ public class Payment {
     private String merchantId;
     private String merchantOrderId;
     private String merchantTimestamp;
+
     private BigDecimal amount;
+    private String cardNumber;  // TODO mask
+
+    private String acquirerOrderId;
+    private String acquirerTimestamp;
+    private String issuerOrderId;
+    private String issuerTimestamp;
 
 }

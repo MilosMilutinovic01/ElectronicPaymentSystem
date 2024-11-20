@@ -20,6 +20,8 @@ import org.bankexample.bankbackend.service.CardService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
 
 import static org.bankexample.bankbackend.util.constants.PaymentConstants.PAYMENT_URL;
@@ -55,18 +57,26 @@ public class AcquirerServiceImpl implements AcquirerService {
         Payment payment = paymentRepository.findById(UUID.fromString(dto.getPaymentId()))
                 .orElseThrow(); // TODO Exception and Handler
         // Parameters validation TODO extract to separate service
-        TransactionRequestDTO transactionRequestDTO = transactionMapper.mapInitiatePaymentDTOToTransactionRequestDTO(dto, payment);
+        payment.setCardNumber(dto.getCardNumber());
+        paymentRepository.save(payment);
+
+        TransactionRequestDTO transactionRequestDTO = transactionMapper.mapInitiatePaymentDTOToTransactionRequestDTO(
+                dto, payment, merchantService.getMerchantAccountNumber(payment.getMerchantId()));
         PaymentResultResponseDTO response = new PaymentResultResponseDTO();
 
         if (cardService.clientInSameBank(dto.getCardNumber())) {
             TransactionResultResponseDTO transactionResultDTO =  transactionService.holdFunds(transactionRequestDTO);
-            // Send log to PCC, wait for confirmation
             response.setRedirectUrl(paymentRedirectUrlsService.getUrlForPaymentId(payment.getId(), transactionResultDTO.getTransactionResult()));
         }
-        // Else
-            // Generate acquirerOrderId, acquirerTimestamp
-            // Send card data to PCC - forward request
+        else {
+            payment.setAcquirerOrderId(UUID.randomUUID().toString());
+            payment.setAcquirerTimestamp(LocalDateTime.now().toInstant(ZoneOffset.UTC).toString());
+            transactionRequestDTO.setAcquirerOrderId(payment.getAcquirerOrderId());
+            transactionRequestDTO.setAcquirerTimestamp(payment.getAcquirerTimestamp());
+            TransactionResultResponseDTO transactionResultDTO = new TransactionResultResponseDTO(); // Send card data to PCC - forward request
+            paymentRepository.save(paymentMapper.updateIssuerAcquirerFields(payment, transactionResultDTO));
             // Set redirect url String.format("redirect:%s", redirectUrl);
+        }
 
         return response;
     }

@@ -16,6 +16,7 @@ public class TransactionMapper {
         Transaction transaction = new Transaction();
         transaction.setMerchantId(dto.getMerchantId());
         transaction.setMerchantOrderId(dto.getMerchantOrderId());
+        transaction.setReceiverBankAccountNumber(dto.getReceiverBankAccount());
         transaction.setCardNumber(dto.getCardNumber());
         transaction.setAmount(dto.getAmount());
         transaction.setAcquirerOrderId(dto.getAcquirerOrderId());
@@ -35,7 +36,7 @@ public class TransactionMapper {
         return dto;
     }
 
-    public TransactionRequestDTO mapInitiatePaymentDTOToTransactionRequestDTO(InitiatePaymentDTO dto, Payment payment) {
+    public TransactionRequestDTO mapInitiatePaymentDTOToTransactionRequestDTO(InitiatePaymentDTO dto, Payment payment, String receiverBankAccountNumber) {
         TransactionRequestDTO transactionRequestDTO = new TransactionRequestDTO();
         transactionRequestDTO.setCardNumber(dto.getCardNumber());
         transactionRequestDTO.setSecurityCode(dto.getCardSecurityCode());

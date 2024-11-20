@@ -7,6 +7,6 @@ public interface MerchantService {
 
      void addMerchant(CreateMerchantDTO createMerchantDTO);
      void editMerchant(String merchantId, EditMerchantDTO editMerchantDTO);
-     String getMerchantPan(String merchantId);
+     String getMerchantAccountNumber(String merchantId);
      void authenticateMerchant(String merchantId, String password);
 }

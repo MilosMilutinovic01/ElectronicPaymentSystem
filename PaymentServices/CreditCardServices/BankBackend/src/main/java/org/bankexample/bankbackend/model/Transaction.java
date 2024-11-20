@@ -20,14 +20,18 @@ public class Transaction {
     @Id
     private UUID id;
     @CreationTimestamp
-    private Instant timestamp;
+    private Instant transactionTimestamp;
+    private TransactionType transactionType;
+    private TransactionResult transactionResult;
+
+    private BigDecimal amount;
+    private String cardNumber;  // TODO mask
+    private String receiverBankAccountNumber;
+    private String senderBankAccountNumber;
+
     private String merchantId;
     private String merchantOrderId;
 //    private String merchantTimestamp;
-    private BigDecimal amount;
-    private String cardNumber;  // TODO mask
-    private TransactionType transactionType;
-    private TransactionResult transactionResult;
     private String acquirerOrderId;
     private String acquirerTimestamp;
     private String issuerOrderId;

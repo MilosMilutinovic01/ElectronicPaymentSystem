@@ -37,10 +37,10 @@ public class MerchantServiceImpl implements MerchantService {
     }
 
     @Override
-    public String getMerchantPan(String merchantId) {
+    public String getMerchantAccountNumber(String merchantId) {
         Merchant merchant = merchantRepository.findByMerchantId(merchantId)
                 .orElseThrow(() -> new MerchantDoesNotExistException(merchantId));
-        return merchant.getPan();
+        return merchant.getBankAccountNumber();
     }
 
     @Override

@@ -13,7 +13,7 @@ import java.util.UUID;
 @RequestMapping(value = "/payment")
 public class PaymentViewController {
 
-    @GetMapping("/{paymentId}-{merchantId}")
+    @GetMapping("/{paymentId}/{merchantId}")
     public String paymentForm(@PathVariable UUID paymentId, @PathVariable String merchantId, Model model) {
         model.addAttribute("paymentId", paymentId);
         model.addAttribute("merchantId", merchantId);

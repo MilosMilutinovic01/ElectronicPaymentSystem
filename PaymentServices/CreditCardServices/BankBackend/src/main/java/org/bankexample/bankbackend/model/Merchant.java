@@ -27,7 +27,7 @@ public class Merchant {
     @Column(name = "password")
     private String password;    // api key
 
-    @Column(name = "pan")
-    private String pan;
+    @Column(name = "bank_account_number")
+    private String bankAccountNumber;
 
 }
