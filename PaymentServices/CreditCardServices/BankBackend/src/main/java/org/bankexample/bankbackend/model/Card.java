@@ -14,6 +14,8 @@ import java.util.UUID;
 public class Card {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(unique = true)
     private UUID id;
 
     @Column(name = "card_number")

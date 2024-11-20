@@ -1,6 +1,5 @@
 package org.bankexample.bankbackend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,8 +20,8 @@ public class Merchant {
     @Column(name = "merchant_name")
     private String merchantName;
 
-    @Column(name = "merchant_id")
-    private String merchantId;  // business logic id
+    @Column(name = "merchant_external_id")
+    private String merchantExternalId;  // business logic id
 
     @Column(name = "password")
     private String password;    // api key

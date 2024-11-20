@@ -24,7 +24,7 @@ public class PaymentController {
     private final TransactionService transactionService;
 
     @PostMapping
-    public ResponseEntity<PaymentCreatedResponseDTO> createPaymentRequest(CreatePaymentDTO dto) {
+    public ResponseEntity<PaymentCreatedResponseDTO> createPaymentRequest(@RequestBody  CreatePaymentDTO dto) {
         PaymentCreatedResponseDTO created = acquirerService.createPayment(dto);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }

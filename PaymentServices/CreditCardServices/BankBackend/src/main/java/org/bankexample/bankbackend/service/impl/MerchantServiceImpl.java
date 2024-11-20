@@ -20,7 +20,7 @@ public class MerchantServiceImpl implements MerchantService {
 
     @Override
     public void addMerchant(CreateMerchantDTO createMerchantDTO) {
-        if (merchantRepository.existsByMerchantId(createMerchantDTO.getMerchantId())) {
+        if (merchantRepository.existsByMerchantExternalId(createMerchantDTO.getMerchantId())) {
             throw new MerchantAlreadyExistsException(createMerchantDTO.getMerchantId());
         }
         Merchant merchant = MerchantMapper.INSTANCE.createDtoToModel(createMerchantDTO);
@@ -29,7 +29,7 @@ public class MerchantServiceImpl implements MerchantService {
 
     @Override
     public void editMerchant(String merchantId, EditMerchantDTO editMerchantDTO) {
-        Merchant merchant = merchantRepository.findByMerchantId(merchantId)
+        Merchant merchant = merchantRepository.findByMerchantExternalId(merchantId)
                 .orElseThrow(() -> new MerchantDoesNotExistException(merchantId));
         merchant.setMerchantName(editMerchantDTO.getMerchantName());
         merchant.setPassword(editMerchantDTO.getPassword());
@@ -38,14 +38,14 @@ public class MerchantServiceImpl implements MerchantService {
 
     @Override
     public String getMerchantAccountNumber(String merchantId) {
-        Merchant merchant = merchantRepository.findByMerchantId(merchantId)
+        Merchant merchant = merchantRepository.findByMerchantExternalId(merchantId)
                 .orElseThrow(() -> new MerchantDoesNotExistException(merchantId));
         return merchant.getBankAccountNumber();
     }
 
     @Override
     public void authenticateMerchant(String merchantId, String password) {
-        Merchant merchant = merchantRepository.findByMerchantId(merchantId)
+        Merchant merchant = merchantRepository.findByMerchantExternalId(merchantId)
                 .orElseThrow(() -> new MerchantDoesNotExistException(merchantId));
         if (!merchant.getPassword().equals(password)) {
             throw new MerchantAuthFailedException();

@@ -27,12 +27,12 @@ public class TransactionMapper {
     public TransactionResultResponseDTO mapToTransactionResultResponseDTO(Transaction transaction) {
         TransactionResultResponseDTO dto = new TransactionResultResponseDTO();
         dto.setTransactionResult(transaction.getTransactionResult());
-        dto.setMerchantId(dto.getMerchantId());
-        dto.setMerchantOrderId(dto.getMerchantOrderId());
-        dto.setAcquirerOrderId(dto.getAcquirerOrderId());
-        dto.setAcquirerTimestamp(dto.getAcquirerTimestamp());
-        dto.setIssuerOrderId(dto.getIssuerOrderId());
-        dto.setIssuerTimestamp(dto.getIssuerTimestamp());
+        dto.setMerchantId(transaction.getMerchantId());
+        dto.setMerchantOrderId(transaction.getMerchantOrderId());
+        dto.setAcquirerOrderId(transaction.getAcquirerOrderId());
+        dto.setAcquirerTimestamp(transaction.getAcquirerTimestamp());
+        dto.setIssuerOrderId(transaction.getIssuerOrderId());
+        dto.setIssuerTimestamp(transaction.getIssuerTimestamp());
         return dto;
     }
 
@@ -43,6 +43,7 @@ public class TransactionMapper {
         transactionRequestDTO.setExpirationMonth(dto.getExpirationMonth());
         transactionRequestDTO.setExpirationYear(dto.getExpirationYear());
         transactionRequestDTO.setCardHolderName(dto.getCardHolderName());
+        transactionRequestDTO.setReceiverBankAccount(receiverBankAccountNumber);
         transactionRequestDTO.setAmount(payment.getAmount());
         transactionRequestDTO.setMerchantId(payment.getMerchantId());
         transactionRequestDTO.setMerchantOrderId(payment.getMerchantOrderId());

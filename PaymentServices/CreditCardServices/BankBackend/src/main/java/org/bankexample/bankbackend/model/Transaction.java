@@ -1,8 +1,6 @@
 package org.bankexample.bankbackend.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -18,6 +16,8 @@ import java.util.UUID;
 public class Transaction {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(unique = true)
     private UUID id;
     @CreationTimestamp
     private Instant transactionTimestamp;

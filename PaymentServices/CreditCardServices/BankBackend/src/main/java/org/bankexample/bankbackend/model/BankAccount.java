@@ -17,6 +17,8 @@ public class BankAccount {
 
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(unique = true)
     private UUID id;
 
     @Column(name = "account_number", unique = true)

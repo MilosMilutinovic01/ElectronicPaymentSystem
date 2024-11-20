@@ -1,8 +1,6 @@
 package org.bankexample.bankbackend.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +19,8 @@ import static org.bankexample.bankbackend.util.constants.PaymentConstants.*;
 public class PaymentRedirectUrls {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(unique = true)
     private UUID id;
     @Column(name = "payment_id")
     private UUID paymentId;

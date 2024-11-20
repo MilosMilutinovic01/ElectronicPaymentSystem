@@ -7,8 +7,6 @@ import java.math.BigDecimal;
 @Data
 public class InitiatePaymentDTO {
 
-    // Rename to initiate payment? -DONE
-
     private String cardNumber;
     private String cardSecurityCode;
     private int expirationMonth;
@@ -16,8 +14,5 @@ public class InitiatePaymentDTO {
     private String cardHolderName;
     private String paymentId;
     private String merchantId;
-//    private String successUrl;
-//    private String failedUrl;
-//    private String errorUrl;
 
 }

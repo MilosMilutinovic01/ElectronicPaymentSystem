@@ -39,7 +39,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public boolean clientInSameBank(String cardNumber) {
-        return false;
+        return cardRepository.findByCardNumber(cardNumber).isPresent();
     }
 
     @Override

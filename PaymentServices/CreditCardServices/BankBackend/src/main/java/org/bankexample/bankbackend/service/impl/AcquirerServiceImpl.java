@@ -43,9 +43,10 @@ public class AcquirerServiceImpl implements AcquirerService {
 
         merchantService.authenticateMerchant(dto.getMerchantId(), dto.getMerchantPassword());
 
-        Payment payment = paymentRepository.save(paymentMapper.mapToPayment(dto));
+        Payment payment = paymentMapper.mapToPayment(dto);
+        payment = paymentRepository.save(payment);
         paymentRedirectUrlsService.save(payment.getId(), dto.getSuccessUrl(), dto.getFailedUrl(), dto.getErrorUrl());
-        String paymentUrl = String.format("%s/%s", PAYMENT_URL, payment.getId());
+        String paymentUrl = String.format("%s/%s/%s", PAYMENT_URL, payment.getId(), payment.getMerchantId());
 
         return paymentMapper.mapToPaymentCreatedResponseDTO(payment, paymentUrl, dto.getSuccessUrl(), dto.getFailedUrl(), dto.getErrorUrl());
 
@@ -62,22 +63,23 @@ public class AcquirerServiceImpl implements AcquirerService {
 
         TransactionRequestDTO transactionRequestDTO = transactionMapper.mapInitiatePaymentDTOToTransactionRequestDTO(
                 dto, payment, merchantService.getMerchantAccountNumber(payment.getMerchantId()));
-        PaymentResultResponseDTO response = new PaymentResultResponseDTO();
+        PaymentResultResponseDTO response;
+        TransactionResultResponseDTO transactionResultDTO;
 
         if (cardService.clientInSameBank(dto.getCardNumber())) {
-            TransactionResultResponseDTO transactionResultDTO =  transactionService.holdFunds(transactionRequestDTO);
-            response.setRedirectUrl(paymentRedirectUrlsService.getUrlForPaymentId(payment.getId(), transactionResultDTO.getTransactionResult()));
+            transactionResultDTO =  transactionService.holdFunds(transactionRequestDTO);
         }
         else {
             payment.setAcquirerOrderId(UUID.randomUUID().toString());
             payment.setAcquirerTimestamp(LocalDateTime.now().toInstant(ZoneOffset.UTC).toString());
             transactionRequestDTO.setAcquirerOrderId(payment.getAcquirerOrderId());
             transactionRequestDTO.setAcquirerTimestamp(payment.getAcquirerTimestamp());
-            TransactionResultResponseDTO transactionResultDTO = new TransactionResultResponseDTO(); // Send card data to PCC - forward request
+            transactionResultDTO = new TransactionResultResponseDTO(); // Send card data to PCC - forward request
             paymentRepository.save(paymentMapper.updateIssuerAcquirerFields(payment, transactionResultDTO));
-            // Set redirect url String.format("redirect:%s", redirectUrl);
         }
 
+        response = paymentMapper.mapToPaymentResultResponseDTO(transactionResultDTO, String.valueOf(payment.getId()));
+        response.setRedirectUrl(paymentRedirectUrlsService.getUrlForPaymentId(payment.getId(), transactionResultDTO.getTransactionResult()));
         return response;
     }
 
