@@ -15,5 +15,5 @@ public class PaymentResultResponseDTO {
     private String issuerOrderId;
     private String issuerTimestamp;
     private String redirectUrl;
-
+    private String message; // TODO
 }

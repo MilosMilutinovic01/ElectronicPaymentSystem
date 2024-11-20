@@ -62,6 +62,7 @@ public class AcquirerServiceImpl implements AcquirerService {
         validateParametersForInitiatingPayment(dto, payment);
 
         payment.setCardNumber(dto.getCardNumber());
+        payment.setPaymentAttempted(true);
         paymentRepository.save(payment);
 
         TransactionRequestDTO transactionRequestDTO = transactionMapper.mapInitiatePaymentDTOToTransactionRequestDTO(
@@ -71,8 +72,7 @@ public class AcquirerServiceImpl implements AcquirerService {
 
         if (cardService.clientInSameBank(dto.getCardNumber())) {
             transactionResultDTO =  transactionService.holdFunds(transactionRequestDTO);
-        }
-        else {
+        } else {
             payment.setAcquirerOrderId(UUID.randomUUID().toString());
             payment.setAcquirerTimestamp(LocalDateTime.now().toInstant(ZoneOffset.UTC).toString());
             transactionRequestDTO.setAcquirerOrderId(payment.getAcquirerOrderId());
@@ -88,6 +88,9 @@ public class AcquirerServiceImpl implements AcquirerService {
 
     @Override
     public void validateParametersForInitiatingPayment(InitiatePaymentDTO dto, Payment payment) {
+        if (payment.isPaymentAttempted()) {
+            throw new PaymentParametersBadRequestException("Payment has already been tried");
+        }
         if (!dto.getMerchantId().equals(payment.getMerchantId())) {
             throw new PaymentParametersBadRequestException("Invalid merchant id");
         }

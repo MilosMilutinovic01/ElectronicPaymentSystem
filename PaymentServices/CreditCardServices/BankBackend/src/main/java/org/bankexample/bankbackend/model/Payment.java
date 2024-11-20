@@ -29,4 +29,6 @@ public class Payment {
     private String issuerOrderId;
     private String issuerTimestamp;
 
+    private boolean paymentAttempted;
+
 }
