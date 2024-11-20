@@ -17,7 +17,7 @@ public class MerchantExceptionHandlerAdvice {
     }
 
     @ExceptionHandler(MerchantDoesNotExistException.class)
-    public ResponseEntity<String> handleMerchantDoesNotExists(MerchantDoesNotExistException ex) {
+    public ResponseEntity<String> handleMerchantDoesNotExist(MerchantDoesNotExistException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

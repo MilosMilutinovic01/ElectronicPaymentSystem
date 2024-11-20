@@ -7,6 +7,8 @@ import org.bankexample.bankbackend.dto.payment.PaymentCreatedResponseDTO;
 import org.bankexample.bankbackend.dto.payment.PaymentResultResponseDTO;
 import org.bankexample.bankbackend.dto.transaction.TransactionRequestDTO;
 import org.bankexample.bankbackend.dto.transaction.TransactionResultResponseDTO;
+import org.bankexample.bankbackend.exception.PaymentDoesNotExistException;
+import org.bankexample.bankbackend.exception.PaymentParametersBadRequestException;
 import org.bankexample.bankbackend.mapper.PaymentMapper;
 import org.bankexample.bankbackend.mapper.TransactionMapper;
 import org.bankexample.bankbackend.model.Payment;
@@ -56,8 +58,9 @@ public class AcquirerServiceImpl implements AcquirerService {
     public PaymentResultResponseDTO initiatePayment(InitiatePaymentDTO dto) {
 
         Payment payment = paymentRepository.findById(UUID.fromString(dto.getPaymentId()))
-                .orElseThrow(); // TODO Exception and Handler
-        // Parameters validation TODO extract to separate service
+                .orElseThrow(PaymentDoesNotExistException::new);
+        validateParametersForInitiatingPayment(dto, payment);
+
         payment.setCardNumber(dto.getCardNumber());
         paymentRepository.save(payment);
 
@@ -81,6 +84,14 @@ public class AcquirerServiceImpl implements AcquirerService {
         response = paymentMapper.mapToPaymentResultResponseDTO(transactionResultDTO, String.valueOf(payment.getId()));
         response.setRedirectUrl(paymentRedirectUrlsService.getUrlForPaymentId(payment.getId(), transactionResultDTO.getTransactionResult()));
         return response;
+    }
+
+    @Override
+    public void validateParametersForInitiatingPayment(InitiatePaymentDTO dto, Payment payment) {
+        if (!dto.getMerchantId().equals(payment.getMerchantId())) {
+            throw new PaymentParametersBadRequestException("Invalid merchant id");
+        }
+        // Card number validation TODO
     }
 
 
