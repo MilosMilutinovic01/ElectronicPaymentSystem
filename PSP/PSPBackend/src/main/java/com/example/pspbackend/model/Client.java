@@ -17,6 +17,8 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class Client extends User{
+    @Column(name = "merchant_password")
+    private String merchantPassword;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JsonIgnore

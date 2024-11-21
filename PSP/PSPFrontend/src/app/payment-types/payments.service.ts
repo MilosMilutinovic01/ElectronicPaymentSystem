@@ -11,7 +11,9 @@ export class PaymentsService {
   constructor(private http: HttpClient) {}
 
   findAll(): Observable<PaymentType[]> {
-    return this.http.get<PaymentType[]>(environment.apiUrl + 'payment/');
+    return this.http.get<PaymentType[]>(
+      environment.apiUrl + 'payment/find-all'
+    );
   }
 
   findTypesByUser(userId: string): Observable<PaymentType[]> {

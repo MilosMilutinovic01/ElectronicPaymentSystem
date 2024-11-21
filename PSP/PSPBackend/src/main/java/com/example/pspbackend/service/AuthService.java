@@ -4,10 +4,9 @@ import com.example.pspbackend.auth.AuthUser;
 import com.example.pspbackend.dto.*;
 import com.example.pspbackend.mapper.ClientMapper;
 import com.example.pspbackend.mapper.UserMapper;
-import com.example.pspbackend.model.Client;
-import com.example.pspbackend.model.Role;
-import com.example.pspbackend.model.User;
+import com.example.pspbackend.model.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +24,11 @@ import org.springframework.stereotype.Service;
 
 import com.example.pspbackend.repository.*;
 
+import java.security.SecureRandom;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -43,6 +45,10 @@ public class AuthService {
     private IUserRepository IUserRepository;
     @Autowired
     private IClientRepository IClientRepository;
+    @Autowired
+    private IPaymentMethodsRepository paymentMethodsRepository;
+    @Autowired
+    private IClientMethodRepository clientMethodsRepository;
 
     private String generateToken(Authentication authentication) {
         Instant now = Instant.now();
@@ -93,19 +99,60 @@ public class AuthService {
 
     public ResponseEntity registration(RegistrationDTO registration){
         try {
-            Client client = ClientMapper.INSTANCE.registrationDtoToModel(registration);
+            RegistrationUserDTO registrationUserDTO = new RegistrationUserDTO(
+                    registration.getName(),
+                    registration.getUsername(),
+                    registration.getPassword()
+            );
+            Client client = ClientMapper.INSTANCE.registrationDtoToModel(registrationUserDTO);
             Optional<User> foundUser = IUserRepository.findByUsername(client.getUsername());
             if(foundUser.isPresent()) {
-                return new ResponseEntity(new RegistrationResponseDTO("Registration failed! Username already exists.", null), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(new RegistrationResponseDTO("Registration failed! Username already exists.", null, null), HttpStatus.BAD_REQUEST);
             }
             client.setPassword(encoder.encode(client.getPassword()));
             client.setRole(Role.CLIENT);
 
             client = IClientRepository.save(client);
-            log.info("Registration DTO: ", client.getName());
-            return new ResponseEntity(new RegistrationResponseDTO("User registered successfully", client.getId().toString()), HttpStatus.OK);
+
+            // add payment methods
+            List<ClientMethods> clientMethodsList = new ArrayList<>();
+            Client finalClient = client;
+            registration.getPaymentMethods().forEach(m->{
+                Optional<PaymentMethods> method = paymentMethodsRepository.findByName(m.getName());
+                if(method.isPresent()) {
+                    clientMethodsList.add(ClientMethods.builder()
+                            .client(finalClient)
+                            .method(method.get())
+                            .build());
+                }
+            });
+
+            clientMethodsRepository.saveAll(clientMethodsList);
+
+            // generate merchant password
+            String merchantPassword = generateMerchantPassword();
+            client.setMerchantPassword(merchantPassword);
+            client = IClientRepository.save(client);
+
+            // TODO request to bank (name, id, password)
+
+
+            return new ResponseEntity(new RegistrationResponseDTO("User registered successfully", client.getId().toString(), merchantPassword), HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity(new RegistrationResponseDTO("User registration failed", null), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new RegistrationResponseDTO("User registration failed", null, null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public String generateMerchantPassword() {
+        String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        SecureRandom RANDOM = new SecureRandom();
+        StringBuilder stringBuilder = new StringBuilder(16);
+        for (int i = 0; i < 16; i++) {
+            int index = RANDOM.nextInt(CHARACTERS.length());
+            stringBuilder.append(CHARACTERS.charAt(index));
+        }
+
+
+        return stringBuilder.toString();
     }
 }

@@ -1,63 +1,109 @@
-<div class="card">
-  <div class="div-text">
-    <div class="text">Create new account</div>
-    <div class="main-text">Register</div>
-  </div>
-  <div class="register-card">
-    <form [formGroup]="userForm">
-      <div class="form">
-        <div class="form-column">
-          <div class="first-row">
-            <div class="form-field-row">
+<div class="centered-page">
+  <div class="register-page" *ngIf="isSecondStep === false">
+    <div class="div-text">
+      <div class="text">Create new account</div>
+      <div class="main-text">Register</div>
+    </div>
+    <div class="register-card">
+      <form [formGroup]="userForm">
+        <div class="form">
+          <div class="form-column">
+            <div class="first-row">
+              <div class="form-field-row">
+                <input
+                  formControlName="name"
+                  type="text"
+                  class="input"
+                  placeholder="Name*"
+                  required
+                  ng-class="{ red: !isFormValid }"
+                />
+              </div>
+
+              <div class="form-field-row">
+                <input
+                  formControlName="username"
+                  type="text"
+                  class="input"
+                  placeholder="Username*"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-field">
               <input
-                formControlName="name"
-                type="text"
+                formControlName="password"
+                type="password"
                 class="input"
-                placeholder="Name*"
+                placeholder="Password*"
                 required
-                ng-class="{ red: !isFormValid }"
               />
             </div>
 
-            <div class="form-field-row">
+            <div class="form-field">
               <input
-                formControlName="username"
-                type="text"
+                formControlName="rePassword"
+                type="password"
                 class="input"
-                placeholder="Username*"
+                placeholder="Confirm password*"
                 required
               />
             </div>
-          </div>
 
-          <div class="form-field">
-            <input
-              formControlName="password"
-              type="password"
-              class="input"
-              placeholder="Password*"
-              required
-            />
-          </div>
+            <div class="first-row">
+              <div class="form-field-row">
+                <input
+                  formControlName="bank"
+                  type="text"
+                  class="input"
+                  placeholder="Bank*"
+                  required
+                  ng-class="{ red: !isFormValid }"
+                />
+              </div>
 
-          <div class="form-field">
-            <input
-              formControlName="rePassword"
-              type="password"
-              class="input"
-              placeholder="Confirm password*"
-              required
-            />
+              <div class="form-field-row">
+                <input
+                  formControlName="bankAccount"
+                  type="text"
+                  class="input"
+                  placeholder="Bank account number*"
+                  required
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <button type="submit" class="btn" (click)="register()">Submit</button>
-      <p *ngIf="!isFormValid" class="error">All fields must be entered!</p>
-    </form>
-    <div class="register-text">
-      Already have an account?
-      <span class="register-link" (click)="login()">Log in</span>
+        <button type="submit" class="btn" (click)="next()">Next step</button>
+        <p *ngIf="!isFormValid" class="error">All fields must be entered!</p>
+      </form>
+      <div class="register-text">
+        Already have an account?
+        <span class="register-link" (click)="login()">Log in</span>
+      </div>
+    </div>
+  </div>
+  <div class="payments-page" *ngIf="isSecondStep === true">
+    <div class="text">Select your payment methods</div>
+    <div class="payments-card">
+      <form [formGroup]="paymentGroup" class="payments-form">
+        <div *ngFor="let t of types" class="field-checkbox">
+          <p-checkbox
+            [formControl]="getFormControl('selectedTypes')"
+            [label]="t.name"
+            name="group"
+            [value]="t"
+          />
+        </div>
+      </form>
+    </div>
+    <div class="buttons">
+      <button type="submit" class="payment-btn" (click)="back()">Back</button>
+      <button type="submit" class="payment-btn" (click)="register()">
+        Finish
+      </button>
     </div>
   </div>
 </div>

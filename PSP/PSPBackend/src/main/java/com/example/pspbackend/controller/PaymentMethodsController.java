@@ -14,12 +14,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/payment")
-@Validated
 public class PaymentMethodsController {
     @Autowired
     private PaymentMethodsService paymentMethodsService;
-    @PreAuthorize("hasPermission('CLIENT')")
-    @GetMapping("/")
+
+    @GetMapping("/find-all")
     public ResponseEntity findAll() {
         return paymentMethodsService.findAll();
     }
