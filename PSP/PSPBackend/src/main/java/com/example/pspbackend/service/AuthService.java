@@ -23,6 +23,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
 import com.example.pspbackend.repository.*;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.security.SecureRandom;
 import java.time.Instant;
@@ -134,8 +135,8 @@ public class AuthService {
             client.setMerchantPassword(merchantPassword);
             client = IClientRepository.save(client);
 
-            // TODO request to bank (name, id, password)
-
+            // request to bank
+            createMerchantInBank(client.getName(), client.getId().toString(), client.getMerchantPassword(), registration.getBankAccount());
 
             return new ResponseEntity(new RegistrationResponseDTO("User registered successfully", client.getId().toString(), merchantPassword), HttpStatus.OK);
         }catch (Exception e){
@@ -154,5 +155,28 @@ public class AuthService {
 
 
         return stringBuilder.toString();
+    }
+
+    public void createMerchantInBank(String merchantName,
+                                       String merchantId,
+                                       String password,
+                                       String bankAccountNumber) {
+
+        CreateMerchantDTO merchantDTO = CreateMerchantDTO.builder()
+                .merchantName(merchantName)
+                .merchantId(merchantId)
+                .password(password)
+                .bankAccountNumber(bankAccountNumber)
+                .build();
+
+        WebClient.create()
+                .post()
+                .uri("http://localhost:8080/api/merchant")
+                .bodyValue(merchantDTO)
+                .retrieve()
+                .toBodilessEntity()
+                .subscribe(response -> log.info("Service responded: " + response),
+                        error -> log.error("Error occurred while creating merchant", error));
+
     }
 }
