@@ -39,12 +39,16 @@ export class LoginComponent {
       next: (result) => {
         this.toast.success(result.message, 'Success!');
         if (result.token) {
-          this.router.navigate(['/']);
+          this.router.navigate(['payment-types']);
         }
       },
       error: (error) => {
         this.toast.error(error, 'Error!');
       },
     });
+  }
+
+  register() {
+    this.router.navigate(['register']);
   }
 }

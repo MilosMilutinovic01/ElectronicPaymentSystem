@@ -10,6 +10,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -50,13 +51,16 @@ public class SecutiryConfig {
                 })
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/error/**").permitAll();
-                    auth.requestMatchers("/api/auth/**", "/api/auth/register").permitAll();
+                    auth.requestMatchers( "/api/auth/**", "/api/auth/register").permitAll();
+                    auth.requestMatchers("/api/payment/find-all").permitAll();
                     auth.anyRequest().authenticated();
                 })
+
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt((jwt) -> jwt.decoder(jwtDecoder())))
                 .userDetailsService(userDetailsService)
                 .httpBasic(Customizer.withDefaults())
+                .cors(Customizer.withDefaults())
                 .build();
     }
 

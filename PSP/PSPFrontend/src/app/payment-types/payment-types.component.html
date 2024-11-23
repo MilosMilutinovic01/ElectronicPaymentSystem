@@ -1,0 +1,40 @@
+<div class="centered-page">
+  <div class="card" *ngIf="isForm === true">
+    <div class="text">Select your payment methods</div>
+    <div class="payments-card">
+      <form [formGroup]="group">
+        <div *ngFor="let t of types" class="field-checkbox">
+          <p-checkbox
+            [formControl]="getFormControl('selectedTypes')"
+            [label]="t.name"
+            name="group"
+            [value]="t"
+          />
+        </div>
+      </form>
+    </div>
+    <div class="buttons">
+      <button type="submit" class="btn" (click)="cancel()">Cancel</button>
+      <button type="submit" class="btn" (click)="submit()">Submit</button>
+    </div>
+  </div>
+  <div class="card" *ngIf="isForm === false">
+    <div class="text">Here are your preferred payment methods</div>
+    <div class="payments-card">
+      <form [formGroup]="group">
+        <div
+          *ngFor="let t of types"
+          [ngClass]="{ highlighted: isSelected(t) }"
+          class="field-checkbox"
+        >
+          <p-checkbox
+            formControlName="selectedTypes"
+            [label]="t.name"
+            [value]="t"
+          ></p-checkbox>
+        </div>
+      </form>
+    </div>
+    <button type="button" class="btn" (click)="edit()">Edit choice</button>
+  </div>
+</div>

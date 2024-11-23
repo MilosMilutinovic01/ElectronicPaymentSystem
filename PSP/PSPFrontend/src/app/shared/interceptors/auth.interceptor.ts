@@ -21,7 +21,8 @@ export const authInterceptor: HttpInterceptorFn = (
   const req1 = req.clone({
     setHeaders: headers,
   });
-  if (req.url.includes('auth')) {
+
+  if (req.url.includes('auth') || req.url.includes('payment/find-all')) {
     return next(req);
   }
   return next(req1);
