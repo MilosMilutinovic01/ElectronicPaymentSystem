@@ -136,8 +136,10 @@ public class AuthService {
             client = IClientRepository.save(client);
 
             // request to bank
-            createMerchantInBank(client.getName(), client.getId().toString(), client.getMerchantPassword(), registration.getBankAccount());
-
+            if(registration.getPaymentMethods().stream()
+                    .filter(method -> method.getName().equals("Card")).count() != 0) {
+                createMerchantInBank(client.getName(), client.getId().toString(), client.getMerchantPassword(), registration.getBankAccount());
+            }
             return new ResponseEntity(new RegistrationResponseDTO("User registered successfully", client.getId().toString(), merchantPassword), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity(new RegistrationResponseDTO("User registration failed", null, null), HttpStatus.INTERNAL_SERVER_ERROR);

@@ -129,6 +129,16 @@ export class PaymentTypesComponent {
   }
 
   submit() {
+    if (
+      !this.group.get('selectedTypes')?.value ||
+      this.group.get('selectedTypes')?.value.length === 0
+    ) {
+      this.toast.error(
+        'You must choose at least one payment method!',
+        'Error!'
+      );
+      return;
+    }
     this.paymentsService
       .editUserChoice(this.user.userId, this.group.get('selectedTypes')?.value)
       .subscribe({

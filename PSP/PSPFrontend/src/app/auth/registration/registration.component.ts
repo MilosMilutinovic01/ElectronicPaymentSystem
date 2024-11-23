@@ -91,7 +91,6 @@ export class RegistrationComponent {
   }
 
   register(): void {
-    //if(this.paymentGroup.value.selectedTypes.)
     const registration: Registration = {
       name: this.userForm.value.name || '',
       username: this.userForm.value.username || '',
@@ -100,6 +99,8 @@ export class RegistrationComponent {
       bankAccount: this.userForm.value.bankAccount || '',
       paymentMethods: this.paymentGroup.value.selectedTypes || '',
     };
+
+    console.log(registration);
 
     if (
       !registration.paymentMethods ||
