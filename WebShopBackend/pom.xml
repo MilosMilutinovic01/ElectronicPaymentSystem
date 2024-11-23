@@ -82,7 +82,12 @@
 			<artifactId>mapstruct</artifactId>
 			<version>1.6.0.Beta1</version>
 		</dependency>
-    </dependencies>
+		<dependency>
+			<groupId>io.github.cdimascio</groupId>
+			<artifactId>java-dotenv</artifactId>
+			<version>5.0.0</version>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>

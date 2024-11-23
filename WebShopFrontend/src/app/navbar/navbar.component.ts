@@ -12,7 +12,7 @@ import { NgIf } from '@angular/common';
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
-  user: User = { username: '' };
+  user: User = { username: '', role: '' };
 
   constructor(public router: Router, public authService: AuthService) {}
 
