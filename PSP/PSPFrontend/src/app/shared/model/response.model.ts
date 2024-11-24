@@ -1,6 +1,7 @@
 export interface RegistrationResponseDto {
   message: string;
   userId: string;
+  merchantPassword: string;
 }
 
 export interface CreationResponseDto {

@@ -1,0 +1,10 @@
+<div>
+  <h1>Select a Package:</h1>
+  <div class="package-list">
+    <app-package
+      *ngFor="let pkg of packages"
+      [package]="pkg"
+      [maxOptionsMap]="maxOptionsMap"
+    ></app-package>
+  </div>
+</div>

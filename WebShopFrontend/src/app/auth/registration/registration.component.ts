@@ -1,17 +1,22 @@
+import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
-import { Registration } from '../../shared/model/registration.model';
 import { ToastrService } from 'ngx-toastr';
-import {NgIf} from '@angular/common';
+import { Registration } from '../../shared/model/registration.model';
 
 @Component({
   selector: 'app-registration',
+  standalone: true,
+  imports: [ReactiveFormsModule, NgIf],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.css',
-  imports: [ReactiveFormsModule, NgIf],
-  standalone: true
 })
 export class RegistrationComponent {
   isFormValid: boolean = true;
@@ -49,7 +54,7 @@ export class RegistrationComponent {
         next: (result) => {
           this.toast.success(result.message, 'Success!');
           if (result.userId) {
-            this.router.navigate(['/login']);
+            this.router.navigate(['']);
           }
         },
         error: (error) => {
@@ -61,5 +66,9 @@ export class RegistrationComponent {
     } else {
       this.isFormValid = false;
     }
+  }
+
+  login() {
+    this.router.navigate(['']);
   }
 }

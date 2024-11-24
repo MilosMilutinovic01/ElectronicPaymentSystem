@@ -1,31 +1,33 @@
 <div class="card">
   <div class="div-text">
-    <div class="text">Join us</div>
+    <div class="text">Create new account</div>
     <div class="main-text">Register</div>
   </div>
   <div class="register-card">
     <form [formGroup]="userForm">
       <div class="form">
         <div class="form-column">
-          <div class="form-field">
-            <input
-              formControlName="name"
-              type="text"
-              class="input"
-              placeholder="Name*"
-              required
-              ng-class="{ red: !isFormValid }"
-            />
-          </div>
+          <div class="first-row">
+            <div class="form-field-row">
+              <input
+                formControlName="name"
+                type="text"
+                class="input"
+                placeholder="Name*"
+                required
+                ng-class="{ red: !isFormValid }"
+              />
+            </div>
 
-          <div class="form-field">
-            <input
-              formControlName="username"
-              type="text"
-              class="input"
-              placeholder="Username*"
-              required
-            />
+            <div class="form-field-row">
+              <input
+                formControlName="username"
+                type="text"
+                class="input"
+                placeholder="Username*"
+                required
+              />
+            </div>
           </div>
 
           <div class="form-field">
@@ -53,5 +55,9 @@
       <button type="submit" class="btn" (click)="register()">Submit</button>
       <p *ngIf="!isFormValid" class="error">All fields must be entered!</p>
     </form>
+    <div class="register-text">
+      Already have an account?
+      <span class="register-link" (click)="login()">Log in</span>
+    </div>
   </div>
 </div>
