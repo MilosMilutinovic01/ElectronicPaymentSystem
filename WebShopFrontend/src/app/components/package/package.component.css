@@ -1,0 +1,109 @@
+.container {
+  width: 80%;
+  max-width: 600px; /* Adjust container width */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  margin: 20px auto; /* Center the container */
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.price {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #444;
+  margin-bottom: 20px;
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensures equal height for each section */
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.section-header h3 {
+  flex: 0 0 auto;
+  margin: 0;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.section-header .line {
+  flex: 1;
+  height: 1px;
+  background-color: #ccc;
+  margin-left: 10px;
+}
+
+.section-content {
+  display: flex;
+  flex-direction: column;
+  align-items: left; /* Ensures icon and text are vertically aligned */
+  margin: 5px 0; /* Adjusts spacing between the options */
+  line-height: 1.5; /* Ensures consistent line height */
+}
+
+.section-content p {
+  display: flex;
+  align-items: center;
+  margin: 1px 0;
+  font-size: 0.95rem;
+  color: #444;
+  padding: 0px;
+}
+
+.check-icon {
+  color: #4caf50; /* Green color for the check icon */
+  margin-right: 10px;
+  font-size: 1rem;
+  padding: 0px;
+}
+
+.buy-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.buy-button:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+.buy-button:active {
+  background-color: #388e3c;
+  transform: scale(0.98);
+}

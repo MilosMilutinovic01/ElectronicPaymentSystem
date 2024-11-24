@@ -13,8 +13,17 @@ public class AuthUser extends User implements UserDetails {
     private final User user;
 
     public AuthUser(User user) {
+
         this.user = user;
+        // Initialize fields in the base User class
+        this.setId(user.getId());
+        this.setName(user.getName());
+        this.setUsername(user.getUsername());
+        this.setPassword(user.getPassword());
+        this.setRole(user.getRole());
     }
+
+
 
     public User getUser() {
         return user;
