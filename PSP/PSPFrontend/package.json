@@ -21,6 +21,7 @@
     "@auth0/angular-jwt": "^5.2.0",
     "angular-jwt": "^0.1.11",
     "ngx-toastr": "^19.0.0",
+    "primeng": "^17.18.11",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"

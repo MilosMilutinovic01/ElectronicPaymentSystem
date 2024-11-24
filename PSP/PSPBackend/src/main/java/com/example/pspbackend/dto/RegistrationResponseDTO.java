@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class RegistrationResponseDTO {
     private String message;
     private String userId;
+    private String merchantPassword;
 }

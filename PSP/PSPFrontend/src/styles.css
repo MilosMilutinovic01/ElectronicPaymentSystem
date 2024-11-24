@@ -3,6 +3,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Bevan:ital@0;1&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Montserrat|Open+Sans|Roboto");
+@import url("https://fonts.googleapis.com/css2?family=Kodchasan:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
 @import "ngx-toastr/toastr";
 :root {
   --clr-primary-1: 255, 255, 255; /* White background */
@@ -12,18 +13,20 @@
 
   --clr-accent-high: 0, 150, 255; /* Vivid blue for hover */
   --clr-accent-medium: 0, 122, 204; /* Main accent */
-  --clr-border: 215, 224, 236; /* Light border */
+  --clr-background-gray: 246, 250, 255;
+  --clr-lighter-gray: 232, 239, 255;
+  --clr-gray: 215, 224, 236; /* Light border */
+  --clr-darker-grey: 168, 175, 185;
 
   --fnt-color-light: 255, 255, 255;
   --fnt-color-dark: 18, 32, 63;
 
   --fnt-body: "Montserrat", Tahoma, Geneva, Verdana, sans-serif;
-  --fnt-heading: "Bevan", Tahoma, Geneva, Verdana, sans-serif;
+  --fnt-heading: "Kodchasan", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 html,
 body {
-  height: 100%;
   height: 100%;
 }
 
