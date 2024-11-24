@@ -31,7 +31,7 @@ function submitPayment(paymentId, merchantId) {
         cardSecurityCode: formData.get("cvv")
     };
 
-    fetch('http://localhost:8080/api/payment/initiate', {
+    fetch('http://localhost:8082/api/payment/initiate', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -41,6 +41,7 @@ function submitPayment(paymentId, merchantId) {
         .then(response => response.json())
         .then(data => {
             console.log(data)
+            window.location.replace(data.redirectUrl)
         })
         .catch(error => {
             console.error("Error:", error);
