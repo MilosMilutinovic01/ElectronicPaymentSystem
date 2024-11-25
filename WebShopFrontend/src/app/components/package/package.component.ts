@@ -3,6 +3,7 @@ import { Package } from '../../shared/model/package.model';
 import { CommonModule } from '@angular/common';
 import { PackageService } from '../../services/package.service';
 import { AuthService } from '../../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-package',
@@ -17,7 +18,8 @@ export class PackageComponent implements OnInit {
 
   constructor(
     private packageService: PackageService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -38,6 +40,7 @@ export class PackageComponent implements OnInit {
   }
 
   buyPackage(packageId: number) {
+    window.location.href = 'http://localhost:4200/success';
     this.packageService
       .buyPackage(packageId, this.authService.getUsername())
       .subscribe(
