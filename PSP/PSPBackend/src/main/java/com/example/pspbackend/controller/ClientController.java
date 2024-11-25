@@ -27,7 +27,11 @@ public class ClientController {
     @PreAuthorize("hasPermission('CLIENT')")
     @GetMapping("/find-methods/{id}")
     public ResponseEntity findMethodsByClient(@PathVariable String id) {
-        return clientService.findMethodsByClient(id);
+        return clientService.findMethodsByClientId(id);
     }
 
+    @GetMapping("/find-by-password/{password}")
+    public ResponseEntity findMethodsByMerchantPassword(@PathVariable String password) {
+        return clientService.findMethodsByMerchantPassword(password);
+    }
 }

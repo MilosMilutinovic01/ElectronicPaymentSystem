@@ -11,4 +11,5 @@ import java.util.UUID;
 @Repository
 public interface IClientRepository extends JpaRepository<Client, UUID> {
     Optional<Client> findByUsername(String username);
+    Optional<Client> findByMerchantPassword(String merchantPassword);
 }

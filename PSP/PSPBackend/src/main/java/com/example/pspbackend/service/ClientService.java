@@ -67,27 +67,41 @@ public class ClientService implements IClientService {
     }
 
     @Override
-    public ResponseEntity findMethodsByClient(String clientId) {
+    public ResponseEntity findMethodsByClientId(String clientId) {
         try {
             Optional<Client> optionalClient = clientRepository.findById(UUID.fromString(clientId));
-            if(optionalClient.isEmpty()){
-                return ResponseEntity.badRequest()
-                        .body(new MessageResponseDTO("User does not exist!"));
-            }
-
-            List<ClientMethods> clientMethods = clientMethodsRepository.findByClient(optionalClient.get());
-            Set<PaymentMethods> paymentMethods = new HashSet<>();
-            clientMethods.forEach(cm ->{
-                paymentMethods.add(cm.getMethod());
-            });
-
-            log.info("Selected methods: "+ optionalClient.get().getSelectedMethods().size());
-            return ResponseEntity.ok()
-                    .body(PaymentMethodsMapper.INSTANCE.modelToDtoSet(paymentMethods));
+            return findMethodsByClient(optionalClient);
         } catch (Exception e) {
             return ResponseEntity.internalServerError()
                     .body(new MessageResponseDTO("Error while retrieving payment methods!"));
         }
+    }
+
+    @Override
+    public ResponseEntity findMethodsByMerchantPassword(String merchantPassword) {
+        try {
+            Optional<Client> optionalClient = clientRepository.findByMerchantPassword(merchantPassword);
+            return findMethodsByClient(optionalClient);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body(new MessageResponseDTO("Error while retrieving payment methods!"));
+        }
+    }
+
+    private ResponseEntity findMethodsByClient(Optional<Client> optionalClient) {
+        if(optionalClient.isEmpty()){
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponseDTO("User does not exist!"));
+        }
+
+        List<ClientMethods> clientMethods = clientMethodsRepository.findByClient(optionalClient.get());
+        Set<PaymentMethods> paymentMethods = new HashSet<>();
+        clientMethods.forEach(cm ->{
+            paymentMethods.add(cm.getMethod());
+        });
+
+        return ResponseEntity.ok()
+                .body(PaymentMethodsMapper.INSTANCE.modelToDtoSet(paymentMethods));
     }
 
 }
