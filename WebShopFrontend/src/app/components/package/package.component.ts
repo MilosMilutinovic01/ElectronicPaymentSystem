@@ -42,7 +42,9 @@ export class PackageComponent implements OnInit {
       .buyPackage(packageId, this.authService.getUsername())
       .subscribe(
         (response) => {
-          console.log('Package purchased successfully', response);
+          const redisId = response.redisId;
+          const apiKey = response.apiKey;
+          window.location.href = `http://localhost:4200/choose-payment/${apiKey}/${redisId}`;
           // You can show a success message or redirect the user
         },
         (error) => {

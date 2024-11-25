@@ -3,6 +3,7 @@ package org.example.webshopbackend.controller;
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.extern.slf4j.Slf4j;
 import org.example.webshopbackend.dto.BuyPackageRequestDTO;
+import org.example.webshopbackend.dto.BuyPackageResponseDTO;
 import org.example.webshopbackend.dto.PSPRequestDTO;
 import org.example.webshopbackend.service.PackageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,20 +38,25 @@ public class PackageController {
     public ResponseEntity buyPackage(@RequestBody BuyPackageRequestDTO request)
     {
         //FOR THE PURPOSE IF API KEY IS NEEDED
-//        Dotenv dotenv = Dotenv.configure()
-//            .directory("./") // Specify the directory containing the .env file
-//            .load();;
-//        String apiKey = dotenv.get("MERCHANT_API_KEY");
+        Dotenv dotenv = Dotenv.configure()
+            .directory("./") // Specify the directory containing the .env file
+            .load();;
+        String apiKey = dotenv.get("MERCHANT_API_KEY");
         PSPRequestDTO dto = new PSPRequestDTO(new BigDecimal(packageService.getPackageById(request.getPackageId()).getPrice()), UUID.randomUUID().toString(), LocalDateTime.now().toInstant(ZoneOffset.UTC).toString());
         //TO DO Change uri
-        WebClient.create()
+        String redisId = WebClient.create()
                 .post()
                 .uri("http://localhost:8081/api/merchant")
                 .bodyValue(dto)
                 .retrieve()
-                .toBodilessEntity()
-                .subscribe(response -> log.info("Service responded: " + response),
-                        error -> log.error("Error occurred while creating merchant", error));
-        return new ResponseEntity(HttpStatus.OK);
+                .bodyToMono(String.class) // Assuming the response is a plain String (the redisId)
+                .block();
+
+        if (redisId == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new BuyPackageResponseDTO(apiKey, "Error: No redisId returned"));
+        }
+
+        return new ResponseEntity(new BuyPackageResponseDTO(apiKey,redisId),HttpStatus.OK);
     }
 }

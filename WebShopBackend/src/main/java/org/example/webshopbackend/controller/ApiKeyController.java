@@ -1,9 +1,8 @@
 package org.example.webshopbackend.controller;
 
-import org.example.webshopbackend.dto.ApiKeyDTO;
+import org.example.webshopbackend.dto.BuyPackageResponseDTO;
 import org.example.webshopbackend.dto.MessageDTO;
 import org.example.webshopbackend.service.ApiKeyService;
-import org.example.webshopbackend.service.PackageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,7 +16,7 @@ public class ApiKeyController {
 
     @PreAuthorize("hasPermission('ADMIN')")
     @GetMapping
-    public ResponseEntity<ApiKeyDTO> getApiKey() {
+    public ResponseEntity<BuyPackageResponseDTO> getApiKey() {
         return apiKeyService.getApiKey();
     }
 
