@@ -6,6 +6,8 @@ import org.bankexample.bankbackend.dto.payment.CreatePaymentDTO;
 import org.bankexample.bankbackend.dto.payment.PaymentCreatedResponseDTO;
 import org.bankexample.bankbackend.dto.payment.PaymentResultResponseDTO;
 import org.bankexample.bankbackend.dto.transaction.TransactionRequestDTO;
+import org.bankexample.bankbackend.dto.transaction.TransactionResultResponseDTO;
+import org.bankexample.bankbackend.model.Transaction;
 import org.bankexample.bankbackend.service.AcquirerService;
 import org.bankexample.bankbackend.service.TransactionService;
 import org.springframework.http.HttpStatus;
@@ -36,8 +38,8 @@ public class PaymentController {
     }
 
     @PostMapping("/hold")
-    public void processHoldTransaction(@RequestBody TransactionRequestDTO dto) {
-        transactionService.holdFunds(dto);
+    public ResponseEntity<TransactionResultResponseDTO> processHoldTransaction(@RequestBody TransactionRequestDTO dto) {
+       return new ResponseEntity<>(transactionService.holdFunds(dto), HttpStatus.OK);
     }
 
     @GetMapping("/payment-success")

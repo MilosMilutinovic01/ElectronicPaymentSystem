@@ -24,7 +24,7 @@ public class TransactionMapper {
         return transaction;
     }
 
-    public TransactionResultResponseDTO mapToTransactionResultResponseDTO(Transaction transaction) {
+    public TransactionResultResponseDTO mapToTransactionResultResponseDTO(Transaction transaction, String message) {
         TransactionResultResponseDTO dto = new TransactionResultResponseDTO();
         dto.setTransactionResult(transaction.getTransactionResult());
         dto.setMerchantId(transaction.getMerchantId());
@@ -33,6 +33,7 @@ public class TransactionMapper {
         dto.setAcquirerTimestamp(transaction.getAcquirerTimestamp());
         dto.setIssuerOrderId(transaction.getIssuerOrderId());
         dto.setIssuerTimestamp(transaction.getIssuerTimestamp());
+        dto.setMessage(message);
         return dto;
     }
 
@@ -47,6 +48,8 @@ public class TransactionMapper {
         transactionRequestDTO.setAmount(payment.getAmount());
         transactionRequestDTO.setMerchantId(payment.getMerchantId());
         transactionRequestDTO.setMerchantOrderId(payment.getMerchantOrderId());
+        transactionRequestDTO.setAcquirerOrderId(payment.getAcquirerOrderId());
+        transactionRequestDTO.setAcquirerTimestamp(payment.getAcquirerTimestamp());
         return transactionRequestDTO;
     }
 

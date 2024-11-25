@@ -50,3 +50,25 @@ VALUES (
            'Lee James',
            0.00
        );
+
+
+INSERT INTO cards (id, card_number, cvv, expiration_month, expiration_year, holder_name, account_number
+)
+VALUES (
+           '61b497dc-0627-43b8-943a-518848d62c4f', -- UUID for the card row
+           '555555771000992100',                  -- Card number
+           '222',                                -- CVV
+           2,                                    -- Expiration month
+           2026,                                 -- Expiration year
+           'Iliana Langerak',                         -- Cardholder name
+           '2765432456'                      -- Account number
+       );
+
+INSERT INTO bank_accounts (id, account_number, holder_name, balance
+)
+VALUES (
+           '23d19c1e-c657-4b7c-ae0e-6672328f1e2d',
+           '2765432456',
+           'Lee James',
+           90000.00
+       );

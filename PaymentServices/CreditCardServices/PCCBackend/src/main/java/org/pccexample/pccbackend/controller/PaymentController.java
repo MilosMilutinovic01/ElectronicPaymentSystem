@@ -1,14 +1,13 @@
 package org.pccexample.pccbackend.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.pccexample.pccbackend.dto.transaction.TransactionRequestDTO;
 import org.pccexample.pccbackend.dto.transaction.TransactionResultResponseDTO;
+import org.pccexample.pccbackend.service.PaymentServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -16,9 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class PaymentController {
 
-    @PostMapping
-    public ResponseEntity<TransactionResultResponseDTO> forwardPaymentToIssuer(@RequestBody TransactionResultResponseDTO dto) {
+    private final PaymentServiceImpl paymentService;
 
-        return new ResponseEntity<>(null, HttpStatus.OK);
+    @PostMapping("")
+    public ResponseEntity<TransactionResultResponseDTO> forwardPaymentToIssuer(@RequestBody TransactionRequestDTO dto) {
+        TransactionResultResponseDTO response = paymentService.forwardTransaction(dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/ello")
+    public String heyy() {
+        return "Heyy";
     }
 }

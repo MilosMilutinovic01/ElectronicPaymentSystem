@@ -50,6 +50,7 @@ public class PaymentMapper {
         response.setAcquirerTimestamp(dto.getAcquirerTimestamp());
         response.setIssuerOrderId(dto.getIssuerOrderId());
         response.setIssuerTimestamp(dto.getIssuerTimestamp());
+        response.setMessage(dto.getMessage());
         return response;
 
     }

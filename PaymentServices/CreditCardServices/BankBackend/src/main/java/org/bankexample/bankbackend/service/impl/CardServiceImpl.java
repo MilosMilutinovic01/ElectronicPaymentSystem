@@ -6,6 +6,7 @@ import org.bankexample.bankbackend.exception.CardNumberDoesNotExistException;
 import org.bankexample.bankbackend.model.Card;
 import org.bankexample.bankbackend.repository.CardRepository;
 import org.bankexample.bankbackend.service.CardService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,9 @@ import java.time.YearMonth;
 @RequiredArgsConstructor
 @Service
 public class CardServiceImpl implements CardService {
+
+    @Value("${BANK_PAN_PREFIX:100090}")
+    private String firstPanNumbers;
 
     private final CardRepository cardRepository;
 
@@ -39,6 +43,9 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public boolean clientInSameBank(String cardNumber) {
+        if (!cardNumber.startsWith(firstPanNumbers)) {
+            return false;
+        }
         return cardRepository.findByCardNumber(cardNumber).isPresent();
     }
 
