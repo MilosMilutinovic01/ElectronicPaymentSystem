@@ -19,6 +19,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class AuthService {
   user$ = new BehaviorSubject<User>({
     username: '',
+    role: ''
   });
 
   jwtHelperService = new JwtHelperService();
@@ -47,6 +48,7 @@ export class AuthService {
     const accessToken = this.tokenService.getAccessToken() || '';
     const user: User = {
       username: this.jwtHelperService.decodeToken(accessToken).sub,
+      role: this.jwtHelperService.decodeToken(accessToken).scope
     };
 
     this.user$.next(user);
@@ -58,6 +60,6 @@ export class AuthService {
 
   logout(): void {
     this.tokenService.clear();
-    this.user$.next({ username: '' });
+    this.user$.next({ username: '', role: '' });
   }
 }

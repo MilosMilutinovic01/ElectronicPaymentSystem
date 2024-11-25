@@ -54,6 +54,7 @@ public class SecutiryConfig {
                     auth.requestMatchers( "/api/auth/**", "/api/auth/register").permitAll();
                     auth.requestMatchers("/api/payment/find-all").permitAll();
                     auth.requestMatchers("/api/client/find-by-password/**").permitAll();
+                    auth.requestMatchers("/api/client/save-order-data").permitAll();
                     auth.anyRequest().authenticated();
                 })
 
