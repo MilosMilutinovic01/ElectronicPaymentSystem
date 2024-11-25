@@ -132,7 +132,7 @@ public class AuthService {
 
             // generate merchant password
             String merchantPassword = generateMerchantPassword();
-            client.setMerchantPassword(merchantPassword);
+            client.setMerchantPassword(encoder.encode(merchantPassword));
             client = IClientRepository.save(client);
 
             // request to bank

@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -31,6 +32,9 @@ public class ClientService implements IClientService {
     private IPaymentMethodsRepository paymentMethodsRepository;
     @Autowired
     private IClientMethodRepository clientMethodsRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
     @Override
     public ResponseEntity addPaymentMethodsToClient(String clientId, Set<PaymentMethodsDTO> methods) {
         try{
@@ -80,9 +84,15 @@ public class ClientService implements IClientService {
     @Override
     public ResponseEntity findMethodsByMerchantPassword(String merchantPassword) {
         try {
-            Optional<Client> optionalClient = clientRepository.findByMerchantPassword(merchantPassword);
+            List<Client> allClients = clientRepository.findAll();
+
+
+            Optional<Client> optionalClient = allClients.stream()
+                    .filter(client -> encoder.matches(merchantPassword, client.getMerchantPassword()))
+                    .findFirst();
             return findMethodsByClient(optionalClient);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.internalServerError()
                     .body(new MessageResponseDTO("Error while retrieving payment methods!"));
         }
