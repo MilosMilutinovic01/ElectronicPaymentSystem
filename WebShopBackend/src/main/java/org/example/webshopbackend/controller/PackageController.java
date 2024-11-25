@@ -46,7 +46,7 @@ public class PackageController {
         //TO DO Change uri
         String redisId = WebClient.create()
                 .post()
-                .uri("http://localhost:8081/api/merchant")
+                .uri("http://localhost:8081/api/client/save-order-data")
                 .bodyValue(dto)
                 .retrieve()
                 .bodyToMono(String.class) // Assuming the response is a plain String (the redisId)

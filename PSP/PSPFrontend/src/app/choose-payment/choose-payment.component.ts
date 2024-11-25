@@ -19,6 +19,7 @@ export class ChoosePaymentComponent {
   paymentGroup: FormGroup;
 
   password: string = '';
+  redisId: string = '';
 
   constructor(
     public router: Router,
@@ -35,6 +36,7 @@ export class ChoosePaymentComponent {
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       this.password = params.get('password') || '';
+      this.redisId = params.get('redisId') || '';
     });
     this.findAllTypesByClient();
   }

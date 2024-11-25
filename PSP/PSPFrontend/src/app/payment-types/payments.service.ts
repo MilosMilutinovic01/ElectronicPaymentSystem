@@ -28,6 +28,12 @@ export class PaymentsService {
     );
   }
 
+  getOrderData(redisId: string): Observable<any> {
+    return this.http.get<PaymentType[]>(
+      environment.apiUrl + 'client/get-order-data/' + redisId
+    );
+  }
+
   editUserChoice(
     userId: string,
     selectedTypes: PaymentType[]

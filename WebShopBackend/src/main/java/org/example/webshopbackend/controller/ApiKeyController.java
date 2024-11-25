@@ -1,5 +1,6 @@
 package org.example.webshopbackend.controller;
 
+import org.example.webshopbackend.dto.ApiKeyResponseDTO;
 import org.example.webshopbackend.dto.BuyPackageResponseDTO;
 import org.example.webshopbackend.dto.MessageDTO;
 import org.example.webshopbackend.service.ApiKeyService;
@@ -16,7 +17,7 @@ public class ApiKeyController {
 
     @PreAuthorize("hasPermission('ADMIN')")
     @GetMapping
-    public ResponseEntity<BuyPackageResponseDTO> getApiKey() {
+    public ResponseEntity<ApiKeyResponseDTO> getApiKey() {
         return apiKeyService.getApiKey();
     }
 

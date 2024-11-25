@@ -2,6 +2,7 @@ package org.example.webshopbackend.service;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.example.webshopbackend.Utils.EnvUtils;
+import org.example.webshopbackend.dto.ApiKeyResponseDTO;
 import org.example.webshopbackend.dto.BuyPackageResponseDTO;
 import org.example.webshopbackend.dto.MessageDTO;
 import org.springframework.http.HttpStatus;
@@ -27,12 +28,12 @@ public class ApiKeyService {
      *
      * @return a ResponseEntity containing the API key or a not-found status.
      */
-    public ResponseEntity<BuyPackageResponseDTO> getApiKey() {
+    public ResponseEntity<ApiKeyResponseDTO> getApiKey() {
         String apiKey = dotenv.get("MERCHANT_API_KEY");
         if (apiKey == null || apiKey.isEmpty()) {
-            return new ResponseEntity<>(new BuyPackageResponseDTO(""), HttpStatus.OK);
+            return new ResponseEntity<>(new ApiKeyResponseDTO(""), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new BuyPackageResponseDTO(apiKey), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiKeyResponseDTO(apiKey), HttpStatus.OK);
     }
 
     /**
