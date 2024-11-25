@@ -22,6 +22,12 @@ export class PaymentsService {
     );
   }
 
+  findTypesByMerchantPassword(password: string): Observable<PaymentType[]> {
+    return this.http.get<PaymentType[]>(
+      environment.apiUrl + 'client/find-by-password/' + password
+    );
+  }
+
   editUserChoice(
     userId: string,
     selectedTypes: PaymentType[]

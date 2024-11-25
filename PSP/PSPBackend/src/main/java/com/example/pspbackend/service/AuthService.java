@@ -132,7 +132,7 @@ public class AuthService {
 
             // generate merchant password
             String merchantPassword = generateMerchantPassword();
-            client.setMerchantPassword(merchantPassword);
+            client.setMerchantPassword(encoder.encode(merchantPassword));
             client = IClientRepository.save(client);
 
             // request to bank
@@ -146,7 +146,7 @@ public class AuthService {
         }
     }
 
-    public String generateMerchantPassword() {
+    private String generateMerchantPassword() {
         String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         SecureRandom RANDOM = new SecureRandom();
         StringBuilder stringBuilder = new StringBuilder(16);
@@ -159,7 +159,7 @@ public class AuthService {
         return stringBuilder.toString();
     }
 
-    public void createMerchantInBank(String merchantName,
+    private void createMerchantInBank(String merchantName,
                                        String merchantId,
                                        String password,
                                        String bankAccountNumber) {

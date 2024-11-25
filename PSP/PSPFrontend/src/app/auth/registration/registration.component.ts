@@ -117,7 +117,7 @@ export class RegistrationComponent {
       next: (result) => {
         this.toast.success(result.message, 'Success!');
         if (result.userId) {
-          this.router.navigate(['' + result.merchantPassword]);
+          this.router.navigate(['one-time/' + result.merchantPassword]);
         }
         console.log(result);
       },
