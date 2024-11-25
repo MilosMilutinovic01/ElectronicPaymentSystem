@@ -1,7 +1,7 @@
 package org.pccexample.pccbackend.dto.transaction;
 
 import lombok.Data;
-import org.bankexample.bankbackend.model.TransactionResult;
+import org.pccexample.pccbackend.model.TransactionResult;
 
 @Data
 public class TransactionResultResponseDTO {
