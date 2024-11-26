@@ -70,20 +70,4 @@ public class ClientController {
         }
     }
 
-    private OrderDataRequestDTO getOrderData(String redisId) {
-        try {
-            // Retrieve the JSON string from Redis
-            String jsonString = stringRedisTemplate.opsForValue().get(redisId);
-
-            // Deserialize JSON string back to DTO
-            OrderDataRequestDTO dto = objectMapper.readValue(jsonString, OrderDataRequestDTO.class);
-
-            // Return the DTO
-            return dto;
-    } catch (JsonMappingException e) {
-            throw new RuntimeException(e);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

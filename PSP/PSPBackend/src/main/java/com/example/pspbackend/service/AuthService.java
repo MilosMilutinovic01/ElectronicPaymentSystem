@@ -173,7 +173,7 @@ public class AuthService {
 
         WebClient.create()
                 .post()
-                .uri("http://localhost:8080/api/merchant")
+                .uri("http://localhost:8082/api/merchant")
                 .bodyValue(merchantDTO)
                 .retrieve()
                 .toBodilessEntity()

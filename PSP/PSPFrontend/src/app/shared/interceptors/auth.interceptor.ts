@@ -25,7 +25,8 @@ export const authInterceptor: HttpInterceptorFn = (
   if (
     req.url.includes('auth') ||
     req.url.includes('payment/find-all') ||
-    req.url.includes('client/find-by-password/')
+    req.url.includes('client/find-by-password/') ||
+    req.url.includes('payment/create-payment')
   ) {
     return next(req);
   }

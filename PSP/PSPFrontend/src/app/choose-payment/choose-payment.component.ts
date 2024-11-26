@@ -6,6 +6,7 @@ import { PaymentsService } from '../payment-types/payments.service';
 import { ToastrService } from 'ngx-toastr';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { NgFor } from '@angular/common';
+import { OrderData } from '../shared/model/order-data.model';
 
 @Component({
   selector: 'app-choose-payment',
@@ -57,6 +58,36 @@ export class ChoosePaymentComponent {
   }
 
   select() {
-    console.log(this.paymentGroup.get('selectedType')?.value);
+    const orderData: OrderData = {
+      paymentMethod: this.paymentGroup.get('selectedType')?.value || '',
+      redisId: this.redisId || '',
+      merchantPassword: this.password || '',
+      successUrl: 'http://localhost:4200/success',
+      failedUrl: 'http://localhost:4200/failure',
+      errorUrl: 'http://localhost:4200/error',
+    };
+
+    if (!orderData.paymentMethod) {
+      this.toast.error(
+        'You must choose at least one payment method!',
+        'Error!'
+      );
+      return;
+    } else {
+      this.paymentsService.createPayment(orderData).subscribe({
+        next: (result) => {
+          if (result) {
+            console.log(result);
+            window.location.href = result.paymentUrl;
+            console.log(result);
+          }
+        },
+        error: (error) => {
+          if (error.status === 409) {
+            this.toast.error(error.message, 'Error!');
+          }
+        },
+      });
+    }
   }
 }

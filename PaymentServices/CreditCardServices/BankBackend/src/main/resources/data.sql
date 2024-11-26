@@ -1,4 +1,4 @@
-INSERT INTO merchants (id, merchant_name, merchant_external_id, password, bank_account_number)
+INSERT INTO merchants (id, merchant_name, merchant_id, password, bank_account_number)
 VALUES (
            'e4eaaaf2-d142-11e1-b3e4-080027620cdd',
            'Test Merchant',

@@ -1,6 +1,8 @@
 package com.example.pspbackend.dto;
 
+import com.example.pspbackend.model.PaymentMethods;
 import lombok.Value;
+import org.yaml.snakeyaml.events.Event;
 
 import java.math.BigDecimal;
 
