@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
-import {environment} from '../shared/env/environment';
-import {User} from '../shared/model/user.model';
-import {Registration} from '../shared/model/registration.model';
-import {Login} from '../shared/model/login.model';
-import {LoginResponseDto, RegistrationResponseDto} from '../shared/model/response.model';
-import {TokenService} from './token.service';
+import { environment } from '../shared/env/environment';
+import { User } from '../shared/model/user.model';
+import { Registration } from '../shared/model/registration.model';
+import { Login } from '../shared/model/login.model';
+import {
+  LoginResponseDto,
+  RegistrationResponseDto,
+} from '../shared/model/response.model';
+import { TokenService } from './token.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
@@ -16,6 +19,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class AuthService {
   user$ = new BehaviorSubject<User>({
     username: '',
+    role: ''
   });
 
   jwtHelperService = new JwtHelperService();
@@ -44,13 +48,18 @@ export class AuthService {
     const accessToken = this.tokenService.getAccessToken() || '';
     const user: User = {
       username: this.jwtHelperService.decodeToken(accessToken).sub,
+      role: this.jwtHelperService.decodeToken(accessToken).scope
     };
 
     this.user$.next(user);
   }
 
+  getUsername(): string {
+    return this.user$.value.username;
+  }
+
   logout(): void {
     this.tokenService.clear();
-    this.user$.next({ username: '' });
+    this.user$.next({ username: '', role: '' });
   }
 }

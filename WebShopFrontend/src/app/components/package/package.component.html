@@ -1,0 +1,23 @@
+<div class="container" [attr.data-price]="package.price">
+  <h2>{{ package.name }}</h2>
+  <p class="price">$ {{ package.price }}</p>
+
+  <div class="sections">
+    <div *ngFor="let section of package.sections" class="section">
+      <div class="section-header">
+        <h3>{{ section.name }}</h3>
+        <div class="line"></div>
+      </div>
+      <div class="section-content">
+        <p *ngFor="let option of section.options">
+          <span *ngIf="option !== ''" class="check-icon">✔</span>
+          <span>{{ option || "\u00A0" }}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <button class="buy-button" (click)="buyPackage(package.id)">
+    Buy Bundle
+  </button>
+</div>

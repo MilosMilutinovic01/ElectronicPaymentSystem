@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import { Login } from '../../shared/model/login.model';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Login } from '../../shared/model/login.model';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
+  imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  imports: [ReactiveFormsModule],
-  standalone: true,
 })
 export class LoginComponent {
   showPassword: boolean = false;
@@ -39,12 +39,16 @@ export class LoginComponent {
       next: (result) => {
         this.toast.success(result.message, 'Success!');
         if (result.token) {
-          this.router.navigate(['/']);
+          this.router.navigate(['package-selection']);
         }
       },
       error: (error) => {
         this.toast.error(error, 'Error!');
       },
     });
+  }
+
+  register() {
+    this.router.navigate(['register']);
   }
 }
