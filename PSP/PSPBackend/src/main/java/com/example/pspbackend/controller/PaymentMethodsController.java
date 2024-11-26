@@ -1,5 +1,7 @@
 package com.example.pspbackend.controller;
 
+import com.example.pspbackend.dto.CreatePaymentRequestDTO;
+import com.example.pspbackend.dto.OrderDataRequestDTO;
 import com.example.pspbackend.model.PaymentMethods;
 import com.example.pspbackend.service.PaymentMethodsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,11 @@ public class PaymentMethodsController {
     @GetMapping("/find-all")
     public ResponseEntity findAll() {
         return paymentMethodsService.findAll();
+    }
+
+    @PostMapping("/create-payment")
+    public ResponseEntity createPayment(@RequestBody CreatePaymentRequestDTO createPaymentRequestDTO) {
+        return paymentMethodsService.createPayment(createPaymentRequestDTO);
     }
 
 }
