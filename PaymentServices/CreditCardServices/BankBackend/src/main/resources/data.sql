@@ -3,7 +3,7 @@ VALUES (
            'e4eaaaf2-d142-11e1-b3e4-080027620cdd',
            'Test Merchant',
            'merchant_id_001',
-           'securepassword',
+           '$2a$10$jH9plP/GM8MbcAHmud43NOKNsrM.0pXoA8xqk/1h4enAojA.wGYLC',
            '1234567890123456'
 ) ON CONFLICT DO NOTHING;
 
