@@ -42,6 +42,7 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setIssuerOrderId(transaction.getId().toString());
         transaction.setIssuerTimestamp(LocalDateTime.now().toInstant(ZoneOffset.UTC).toString());
 
+        String message = "";
         try {
             cardService.authenticateCard(dto.getCardNumber(), dto.getExpirationMonth(), dto.getExpirationYear(), dto.getSecurityCode());
             bankAccountService.checkAvailableFunds(dto.getAmount(), bankAccountNumber);
@@ -49,11 +50,13 @@ public class TransactionServiceImpl implements TransactionService {
         } catch (CardNumberDoesNotExistException | CardAuthenticationException
                 | BankAccountDoesNotExistException | InsufficientFundsInBankAccountException e) {
             transaction.setTransactionResult(TransactionResult.FAILURE);
+            message = e.getMessage();
         } catch (Exception exception) {
             transaction.setTransactionResult(TransactionResult.ERROR);
+            message = exception.getMessage();
         }
 
         transactionRepository.save(transaction);
-        return transactionMapper.mapToTransactionResultResponseDTO(transaction);
+        return transactionMapper.mapToTransactionResultResponseDTO(transaction, message);
     }
 }
