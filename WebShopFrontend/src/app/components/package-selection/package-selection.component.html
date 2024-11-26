@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="userRole === 'CUSTOMER'">
   <h1>Select a Package:</h1>
   <div class="package-list">
     <app-package
@@ -7,4 +7,10 @@
       [maxOptionsMap]="maxOptionsMap"
     ></app-package>
   </div>
+</div>
+
+<div *ngIf="userRole === 'ADMIN' && showPasswordInput">
+  <h1>Enter Merchant Password:</h1>
+  <input type="password" [(ngModel)]="apiKey.apiKey" placeholder="Paste Merchant Password here" />
+  <button (click)="submitMerchantPassword()">Submit</button>
 </div>

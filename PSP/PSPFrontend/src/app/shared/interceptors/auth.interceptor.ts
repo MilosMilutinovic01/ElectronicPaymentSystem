@@ -22,7 +22,12 @@ export const authInterceptor: HttpInterceptorFn = (
     setHeaders: headers,
   });
 
-  if (req.url.includes('auth') || req.url.includes('payment/find-all')) {
+  if (
+    req.url.includes('auth') ||
+    req.url.includes('payment/find-all') ||
+    req.url.includes('client/find-by-password/') ||
+    req.url.includes('payment/create-payment')
+  ) {
     return next(req);
   }
   return next(req1);

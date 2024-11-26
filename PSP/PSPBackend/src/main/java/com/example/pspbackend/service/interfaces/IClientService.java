@@ -8,5 +8,6 @@ import java.util.Set;
 
 public interface IClientService {
     ResponseEntity addPaymentMethodsToClient(String clientId, Set<PaymentMethodsDTO> methods);
-    ResponseEntity findMethodsByClient(String clientId);
+    ResponseEntity findMethodsByClientId(String clientId);
+    ResponseEntity findMethodsByMerchantPassword(String merchantPassword);
 }

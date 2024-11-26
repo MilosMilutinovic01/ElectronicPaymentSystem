@@ -1,0 +1,20 @@
+<div class="centered-page">
+  <div class="payments-page">
+    <div class="text">Select your payment method</div>
+    <div class="payments-card">
+      <form [formGroup]="paymentGroup" class="payments-form">
+        <div *ngFor="let t of types" class="field-checkbox">
+          <p-radioButton
+            [inputId]="t.name"
+            [value]="t"
+            formControlName="selectedType"
+          />
+          <label [for]="t.name">
+            {{ t.name }}
+          </label>
+        </div>
+      </form>
+    </div>
+    <button type="submit" class="payment-btn" (click)="select()">Select</button>
+  </div>
+</div>
