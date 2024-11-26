@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface PaymentRedirectUrlsRepository extends JpaRepository<PaymentRedirectUrls, UUID> {
@@ -18,5 +19,7 @@ public interface PaymentRedirectUrlsRepository extends JpaRepository<PaymentRedi
     @Transactional
     @Query("DELETE FROM PaymentRedirectUrls p WHERE p.createdAt < :cutoffDate")
     void deleteOlderThan(@Param("cutoffDate") Instant cutoffDate);
+
+    Optional<PaymentRedirectUrls> findByPaymentId(UUID paymentId);
 
 }
