@@ -28,7 +28,7 @@ public class PaymentRedirectUrlsService {
         if (transactionResult == null) {
             throw new IllegalArgumentException("Transaction result cannot be null");
         }
-        PaymentRedirectUrls paymentRedirectUrls = repository.findById(paymentId)
+        PaymentRedirectUrls paymentRedirectUrls = repository.findByPaymentId(paymentId)
                 .orElse(new PaymentRedirectUrls());
         return switch (transactionResult) {
             case SUCCESS -> paymentRedirectUrls.getSuccessUrl();
