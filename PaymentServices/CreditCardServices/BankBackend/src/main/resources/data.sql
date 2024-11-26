@@ -69,6 +69,6 @@ INSERT INTO bank_accounts (id, account_number, holder_name, balance
 VALUES (
            '23d19c1e-c657-4b7c-ae0e-6672328f1e2d',
            '2765432456',
-           'Lee James',
+           'Iliana Langerak',
            90000.00
        );
